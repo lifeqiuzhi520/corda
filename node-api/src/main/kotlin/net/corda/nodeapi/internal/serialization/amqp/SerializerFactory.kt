@@ -64,6 +64,8 @@ class SerializerFactory(val whitelist: ClassWhitelist, cl : ClassLoader) {
         val declaredClass = declaredType.asClass() ?: throw NotSerializableException(
                 "Declared types of $declaredType are not supported.")
 
+        println (declaredClass)
+
         val actualType: Type = inferTypeVariables(actualClass, declaredClass, declaredType) ?: declaredType
 
         val serializer = if (Collection::class.java.isAssignableFrom(declaredClass)) {
@@ -75,6 +77,10 @@ class SerializerFactory(val whitelist: ClassWhitelist, cl : ClassLoader) {
             serializersByType.computeIfAbsent(declaredClass) {
                 makeMapSerializer(declaredType as? ParameterizedType ?: DeserializedParameterizedType(
                         declaredClass, arrayOf(AnyType, AnyType), null))
+            }
+        } else if (Enum::class.java.isAssignableFrom(declaredClass)) {
+            serializersByType.computeIfAbsent(declaredClass) {
+                EnumSerializer(declaredType as ParameterizedType ?: throw NotSerializableException(""), this)
             }
         } else {
             makeClassSerializer(actualClass ?: declaredClass, actualType, declaredType)

@@ -360,14 +360,13 @@ private fun fingerprintForType(type: Type, contextType: Type?, alreadySeen: Muta
             if (type is SerializerFactory.AnyType) {
                 hasher.putUnencodedChars(ANY_TYPE_HASH)
             } else if (type is Class<*>) {
-                if (type.isArray) {
-                    fingerprintForType(type.componentType, contextType, alreadySeen, hasher, factory).putUnencodedChars(ARRAY_HASH)
-                } else if (SerializerFactory.isPrimitive(type)) {
-                    hasher.putUnencodedChars(type.name)
-                } else if (isCollectionOrMap(type)) {
-                    hasher.putUnencodedChars(type.name)
-                } else {
-                    hasher.fingerprintWithCustomSerializerOrElse(factory, type, type) {
+                when {
+                    type.isArray -> fingerprintForType(type.componentType, contextType, alreadySeen, hasher, factory).putUnencodedChars(ARRAY_HASH)
+                    SerializerFactory.isPrimitive(type) ||
+                    isCollectionOrMap(type) ||
+                    type.isEnum -> hasher.putUnencodedChars(type.name)
+                    else ->
+                        hasher.fingerprintWithCustomSerializerOrElse(factory, type, type) {
                         if (type.kotlin.objectInstance != null) {
                             // TODO: name collision is too likely for kotlin objects, we need to introduce some reference
                             // to the CorDapp but maybe reference to the JAR in the short term.
