@@ -1,10 +1,11 @@
 # Package net.corda.client.jfx.model
 
-Data models for the JavaFX client to Corda. These contain observables which are updated via the Corda RPC interface and notify JavaFX of changes.
+Data models for binding data feeds from Corda nodes into a JavaFX user interface, by presenting the data as [javafx.beans.Observable]
+types.
 
 # Package net.corda.client.jfx.utils
 
-Utility classes (i.e. data classes) used by the JavaFX client.
+Utility classes (i.e. data classes) used by the Corda JavaFX client.
 
 # Package net.corda.client.jackson
 
@@ -21,7 +22,8 @@ RPC client interface to Corda, for use both by user-facing client and integratio
 
 # Package net.corda.core.concurrent
 
-Concurrency/multi-threading support classes for Corda, primarily providing support for the promises pattern.
+Provides a simplified [java.util.concurrent.Future] class that allows registration of a callback to execute when the future
+is complete.
 
 # Package net.corda.core.contracts
 
@@ -47,8 +49,7 @@ Data classes which model different forms of identity (potentially with supportin
 
 # Package net.corda.core.internal
 
-APIs and implementations which are currently being revised and are subject to future change. Generally these should be
-treated as non-public.
+Internal, do not use. These APIs and implementations which are currently being revised and are subject to future change.
 
 # Package net.corda.core.node.services
 
@@ -73,8 +74,7 @@ A collection of utilities for summing financial states, for example, summing obl
 
 # Package net.corda.node.internal
 
-Node APIs and implementations which are currently being revised and are subject to future change. Generally these should be
-treated as non-public.
+Internal, do not use. These APIs and implementations which are currently being revised and are subject to future change.
 
 # Package net.corda.node.services
 
