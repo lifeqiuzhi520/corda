@@ -236,7 +236,12 @@ data class CompositeType(override val name: String, override val label: String?,
     }
 }
 
-data class RestrictedType(override val name: String, override val label: String?, override val provides: List<String>, val source: String, override val descriptor: Descriptor, val choices: List<Choice>) : TypeNotation() {
+data class RestrictedType(override val name: String,
+                          override val label: String?,
+                          override val provides: List<String>,
+                          val source: String,
+                          override val descriptor: Descriptor,
+                          val choices: List<Choice>) : TypeNotation() {
     companion object : DescribedTypeConstructor<RestrictedType> {
         val DESCRIPTOR = UnsignedLong(6L or DESCRIPTOR_TOP_32BITS)
 
@@ -274,6 +279,9 @@ data class RestrictedType(override val name: String, override val label: String?
         }
         sb.append(">\n")
         sb.append("  $descriptor\n")
+        choices.forEach {
+            sb.append("  $it\n")
+        }
         sb.append("</type>")
         return sb.toString()
     }
