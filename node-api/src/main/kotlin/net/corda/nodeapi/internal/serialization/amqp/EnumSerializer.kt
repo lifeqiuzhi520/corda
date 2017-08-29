@@ -1,9 +1,8 @@
 package net.corda.nodeapi.internal.serialization.amqp
 
-import com.sun.xml.internal.bind.v2.model.core.EnumConstant
-import net.corda.core.internal.declaredField
 import org.apache.qpid.proton.codec.Data
 import java.lang.reflect.Type
+import java.io.NotSerializableException
 
 class EnumSerializer(declaredType: Type, declaredClass: Class<*>,factory: SerializerFactory) : AMQPSerializer<Any> {
     override val type: Type = declaredType
@@ -28,9 +27,13 @@ class EnumSerializer(declaredType: Type, declaredClass: Class<*>,factory: Serial
     }
 
     override fun writeObject(obj: Any, data: Data, type: Type, output: SerializationOutput) {
-        println ((obj as Enum<*>))
+        if (obj !is Enum<*>) throw NotSerializableException("Serializing $obj as enum when it isn't")
+
         data.withDescribed(typeNotation.descriptor) {
-            data.putObject(obj.ordinal)
+            withList {
+                data.putObject(obj.name)
+                data.putObject(obj.ordinal)
+            }
         }
     }
 }

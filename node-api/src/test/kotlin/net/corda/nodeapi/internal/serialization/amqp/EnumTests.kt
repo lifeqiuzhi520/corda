@@ -11,6 +11,8 @@ class EnumTests {
         /**
          * If you want to see the schema encoded into the envelope after serialisation change this to true
          */
+
+
         private const val VERBOSE = true
     }
 
@@ -21,6 +23,8 @@ class EnumTests {
     fun serialiseSimpleTest() {
         data class C(val c: Bras)
 
-        val serialised = TestSerializationOutput(VERBOSE, sf1).serialize(C(Bras.UNDERWIRE))
+        TestSerializationOutput(VERBOSE, sf1).serialize(C(Bras.UNDERWIRE))
     }
+
+
 }

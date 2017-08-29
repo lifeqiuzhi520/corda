@@ -59,6 +59,32 @@ open class SerializationOutput(internal val serializerFactory: SerializerFactory
         return SerializedBytes(bytes)
     }
 
+    @Throws(NotSerializableException::class)
+    fun <T : Any> serializeRtnEnvelope(obj: T): SerializedBytes<T> {
+        try {
+            val data = Data.Factory.create()
+            data.withDescribed(Envelope.DESCRIPTOR_OBJECT) {
+                withList {
+                    // Our object
+                    writeObject(obj, this)
+                    // The schema
+                    writeSchema(Schema(schemaHistory.toList()), this)
+                }
+            }
+            val bytes = ByteArray(data.encodedSize().toInt() + 8)
+            val buf = ByteBuffer.wrap(bytes)
+            buf.put(AmqpHeaderV1_0.bytes)
+            data.encode(buf)
+            return SerializedBytes(bytes)
+        } finally {
+            objectHistory.clear()
+            serializerHistory.clear()
+            schemaHistory.clear()
+        }
+    }
+
+
+
     internal fun writeObject(obj: Any, data: Data) {
         writeObject(obj, data, obj.javaClass)
     }
