@@ -55,6 +55,7 @@ import net.corda.node.services.statemachine.FlowStateMachineImpl
 import net.corda.node.services.statemachine.StateMachineManager
 import net.corda.node.services.statemachine.flowVersionAndInitiatingClass
 import net.corda.node.services.transactions.*
+import net.corda.node.services.upgrade.ContractUpgradeServiceImpl
 import net.corda.node.services.vault.HibernateVaultQueryImpl
 import net.corda.node.services.vault.NodeVaultService
 import net.corda.node.services.vault.VaultSoftLockManager
@@ -756,6 +757,7 @@ abstract class AbstractNode(open val configuration: NodeConfiguration,
         override val transactionVerifierService by lazy { makeTransactionVerifierService() }
         override val networkMapCache by lazy { InMemoryNetworkMapCache(this) }
         override val vaultService by lazy { NodeVaultService(this) }
+        override val contractUpgradeService by lazy { ContractUpgradeServiceImpl() }
         override val vaultQueryService by lazy {
             HibernateVaultQueryImpl(database.hibernateConfig, vaultService)
         }
