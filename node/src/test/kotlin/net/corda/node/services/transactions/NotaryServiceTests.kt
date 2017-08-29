@@ -15,6 +15,7 @@ import net.corda.core.utilities.seconds
 import net.corda.node.internal.AbstractNode
 import net.corda.node.services.network.NetworkMapService
 import net.corda.testing.DUMMY_NOTARY
+import net.corda.testing.chooseIdentity
 import net.corda.testing.contracts.DummyContract
 import net.corda.testing.node.MockNetwork
 import org.assertj.core.api.Assertions.assertThat
@@ -140,7 +141,7 @@ class NotaryServiceTests {
     }
 
     fun issueState(node: AbstractNode): StateAndRef<*> {
-        val tx = DummyContract.generateInitial(Random().nextInt(), notaryNode.info.notaryIdentity, node.services.legalIdentity.party.ref(0))
+        val tx = DummyContract.generateInitial(Random().nextInt(), notaryNode.info.notaryIdentity, node.info.chooseIdentity().ref(0))
         val signedByNode = node.services.signInitialTransaction(tx)
         val stx = notaryNode.services.addSignature(signedByNode, notaryNode.services.notaryIdentityKey)
         node.services.recordTransactions(stx)

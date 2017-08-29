@@ -86,7 +86,7 @@ class TransactionKeyHandler(val otherSide: Party, val revocationEnabled: Boolean
     override fun call(): Unit {
         val revocationEnabled = false
         progressTracker.currentStep = SENDING_KEY
-        val legalIdentityAnonymous = serviceHub.keyManagementService.freshKeyAndCert(serviceHub.legalIdentity, revocationEnabled)
+        val legalIdentityAnonymous = serviceHub.keyManagementService.freshKeyAndCert(me, revocationEnabled)
         sendAndReceive<PartyAndCertificate>(otherSide, legalIdentityAnonymous).unwrap { confidentialIdentity ->
             TransactionKeyFlow.validateAndRegisterIdentity(serviceHub.identityService, otherSide, confidentialIdentity)
         }

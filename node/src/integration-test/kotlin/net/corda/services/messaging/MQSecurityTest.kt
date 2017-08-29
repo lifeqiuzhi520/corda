@@ -24,6 +24,7 @@ import net.corda.nodeapi.ArtemisMessagingComponent.Companion.PEERS_PREFIX
 import net.corda.nodeapi.RPCApi
 import net.corda.nodeapi.User
 import net.corda.nodeapi.config.SSLConfiguration
+import net.corda.testing.chooseIdentity
 import net.corda.testing.configureTestSSL
 import net.corda.testing.messaging.SimpleMQClient
 import net.corda.testing.node.NodeBasedTest
@@ -218,7 +219,7 @@ abstract class MQSecurityTest : NodeBasedTest() {
     private fun startBobAndCommunicateWithAlice(): Party {
         val bob = startNode(BOB.name).getOrThrow()
         bob.registerInitiatedFlow(ReceiveFlow::class.java)
-        val bobParty = bob.services.legalIdentity.party
+        val bobParty = bob.info.chooseIdentity()
         // Perform a protocol exchange to force the peer queue to be created
         alice.services.startFlow(SendFlow(bobParty, 0)).resultFuture.getOrThrow()
         return bobParty

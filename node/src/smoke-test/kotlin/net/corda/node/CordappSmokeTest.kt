@@ -47,7 +47,7 @@ class CordappSmokeTest {
 
         factory.create(aliceConfig).use { alice ->
             alice.connect().use { connectionToAlice ->
-                val aliceIdentity = connectionToAlice.proxy.nodeMainIdentity()
+                val aliceIdentity = connectionToAlice.proxy.nodeInfo().legalIdentitiesAndCerts.first().party
                 val future = connectionToAlice.proxy.startFlow(::DummyInitiatingFlow, aliceIdentity).returnValue
                 assertThat(future.getOrThrow().appName).isEqualTo(selfCorDapp.fileName.toString().removeSuffix(".jar"))
             }

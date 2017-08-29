@@ -10,6 +10,7 @@ import net.corda.node.services.network.NetworkMapService
 import net.corda.node.services.transactions.ValidatingNotaryService
 import net.corda.testing.DUMMY_NOTARY
 import net.corda.testing.DUMMY_NOTARY_KEY
+import net.corda.testing.chooseIdentity
 import net.corda.testing.node.MockNetwork
 import org.junit.After
 import org.junit.Assert
@@ -65,7 +66,7 @@ class CustomVaultQueryTest {
         // Use NodeA as issuer and create some dollars
         val flowHandle1 = nodeA.services.startFlow(CashIssueFlow(amountToIssue,
                 OpaqueBytes.of(0x01),
-                nodeA.services.legalIdentity.party,
+                nodeA.info.chooseIdentity(),
                 notaryNode.info.notaryIdentity,
                 false))
         // Wait for the flow to stop and print
@@ -74,9 +75,9 @@ class CustomVaultQueryTest {
 
     private fun topUpCurrencies() {
         val flowHandle1 = nodeA.services.startFlow(TopupIssuerFlow.TopupIssuanceRequester(
-                nodeA.services.legalIdentity.party,
+                nodeA.info.chooseIdentity(),
                 OpaqueBytes.of(0x01),
-                nodeA.services.legalIdentity.party,
+                nodeA.info.chooseIdentity(),
                 notaryNode.info.notaryIdentity))
         flowHandle1.resultFuture.getOrThrow()
     }

@@ -22,6 +22,7 @@ import net.corda.node.services.transactions.BFTNonValidatingNotaryService
 import net.corda.node.services.transactions.minClusterSize
 import net.corda.node.services.transactions.minCorrectReplicas
 import net.corda.node.utilities.ServiceIdentityGenerator
+import net.corda.testing.chooseIdentity
 import net.corda.testing.contracts.DummyContract
 import net.corda.testing.node.MockNetwork
 import org.bouncycastle.asn1.x500.X500Name
@@ -93,7 +94,7 @@ class BFTNotaryServiceTests {
         val notary = bftNotaryCluster(clusterSize)
         node.run {
             val issueTx = signInitialTransaction(notary) {
-                addOutputState(DummyContract.SingleOwnerState(owner = (services.legalIdentity.party)))
+                addOutputState(DummyContract.SingleOwnerState(owner = (info.chooseIdentity())))
             }
             database.transaction {
                 services.recordTransactions(issueTx)
@@ -128,7 +129,7 @@ class BFTNotaryServiceTests {
                     assertEquals(StateRef(issueTx.id, 0), stateRef)
                     assertEquals(spendTxs[successfulIndex].id, consumingTx.id)
                     assertEquals(0, consumingTx.inputIndex)
-                    assertEquals(services.legalIdentity.party, consumingTx.requestingParty)
+                    assertEquals(info.chooseIdentity(), consumingTx.requestingParty)
                 }
             }
         }

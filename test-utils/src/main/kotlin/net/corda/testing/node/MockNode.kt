@@ -168,7 +168,7 @@ class MockNetwork(private val networkSendManuallyPumped: Boolean = false,
             val caCertificates: Array<X509Certificate> = listOf(legalIdentity.certificate.cert, clientCa?.certificate?.cert)
                     .filterNotNull()
                     .toTypedArray()
-            return InMemoryIdentityService((mockNet.identities + services.legalIdentity).toSet(),
+            return InMemoryIdentityService((mockNet.identities + info.legalIdentitiesAndCerts).toSet(),
                     trustRoot = trustRoot, caCertificates = *caCertificates)
         }
 
@@ -219,7 +219,7 @@ class MockNetwork(private val networkSendManuallyPumped: Boolean = false,
 
         override fun start() {
             super.start()
-            mockNet.identities.add(services.legalIdentity)
+            mockNet.identities.add(info.legalIdentitiesAndCerts.first())
         }
 
         // Allow unit tests to modify the plugin list before the node start,
@@ -336,7 +336,7 @@ class MockNetwork(private val networkSendManuallyPumped: Boolean = false,
      */
     fun registerIdentities(){
         nodes.forEach { itNode ->
-            nodes.map { it.services.legalIdentity }.map(itNode.services.identityService::verifyAndRegisterIdentity)
+            nodes.map { it.info.legalIdentitiesAndCerts.first() }.map(itNode.services.identityService::verifyAndRegisterIdentity)
         }
     }
 

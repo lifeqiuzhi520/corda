@@ -22,6 +22,7 @@ import net.corda.irs.flows.FixingFlow
 import net.corda.jackson.JacksonSupport
 import net.corda.node.services.identity.InMemoryIdentityService
 import net.corda.testing.DUMMY_CA
+import net.corda.testing.chooseIdentity
 import net.corda.testing.node.InMemoryMessagingNetwork
 import rx.Observable
 import java.security.PublicKey
@@ -114,8 +115,8 @@ class IRSSimulation(networkSendManuallyPumped: Boolean, runAsync: Boolean, laten
         // have the convenient copy() method that'd let us make small adjustments. Instead they're partly mutable.
         // TODO: We should revisit this in post-Excalibur cleanup and fix, e.g. by introducing an interface.
         val irs = om.readValue<InterestRateSwap.State>(javaClass.classLoader.getResource("net/corda/irs/simulation/trade.json"))
-        irs.fixedLeg.fixedRatePayer = node1.services.legalIdentity.party
-        irs.floatingLeg.floatingRatePayer = node2.services.legalIdentity.party
+        irs.fixedLeg.fixedRatePayer = node1.info.chooseIdentity()
+        irs.floatingLeg.floatingRatePayer = node2.info.chooseIdentity()
 
         node1.registerInitiatedFlow(FixingFlow.Fixer::class.java)
         node2.registerInitiatedFlow(FixingFlow.Fixer::class.java)
@@ -142,7 +143,7 @@ class IRSSimulation(networkSendManuallyPumped: Boolean, runAsync: Boolean, laten
         showConsensusFor(listOf(node1, node2, regulators[0]))
 
         val instigator = StartDealFlow(
-                node2.services.legalIdentity.party,
+                node2.info.chooseIdentity(),
                 AutoOffer(notary.info.notaryIdentity, irs),
                 node1.services.legalIdentityKey)
         val instigatorTxFuture = node1.services.startFlow(instigator).resultFuture

@@ -9,19 +9,20 @@ import net.corda.core.utilities.getOrThrow
 import net.corda.core.utilities.unwrap
 import net.corda.testing.ALICE
 import net.corda.testing.BOB
+import net.corda.testing.chooseIdentity
 import net.corda.testing.node.NodeBasedTest
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 
 class FlowVersioningTest : NodeBasedTest() {
-//    @Test
+    @Test
     fun `getFlowContext returns the platform version for core flows`() {
         val (alice, bob) = listOf(
                 startNode(ALICE.name, platformVersion = 2),
                 startNode(BOB.name, platformVersion = 3)).transpose().getOrThrow()
         bob.installCoreFlow(PretendInitiatingCoreFlow::class, ::PretendInitiatedCoreFlow)
         val (alicePlatformVersionAccordingToBob, bobPlatformVersionAccordingToAlice) = alice.services.startFlow(
-                PretendInitiatingCoreFlow(bob.services.legalIdentity.party)).resultFuture.getOrThrow()
+                PretendInitiatingCoreFlow(bob.info.chooseIdentity())).resultFuture.getOrThrow()
         assertThat(alicePlatformVersionAccordingToBob).isEqualTo(2)
         assertThat(bobPlatformVersionAccordingToAlice).isEqualTo(3)
     }

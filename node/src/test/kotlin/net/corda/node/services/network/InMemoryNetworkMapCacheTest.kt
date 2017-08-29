@@ -5,6 +5,7 @@ import net.corda.core.node.services.ServiceInfo
 import net.corda.core.utilities.getOrThrow
 import net.corda.testing.ALICE
 import net.corda.testing.BOB
+import net.corda.testing.chooseIdentity
 import net.corda.testing.node.MockNetwork
 import org.junit.After
 import org.junit.Before
@@ -40,18 +41,18 @@ class InMemoryNetworkMapCacheTest {
         val entropy = BigInteger.valueOf(24012017L)
         val nodeA = mockNet.createNode(nodeFactory = MockNetwork.DefaultFactory, legalName = ALICE.name, entropyRoot = entropy, advertisedServices = ServiceInfo(NetworkMapService.type))
         val nodeB = mockNet.createNode(nodeFactory = MockNetwork.DefaultFactory, legalName = BOB.name, entropyRoot = entropy, advertisedServices = ServiceInfo(NetworkMapService.type))
-        assertEquals(nodeA.services.legalIdentity.party, nodeB.services.legalIdentity.party)
+        assertEquals(nodeA.info.chooseIdentity(), nodeB.info.chooseIdentity())
 
         mockNet.runNetwork()
 
         // Node A currently knows only about itself, so this returns node A
-        assertEquals(nodeA.services.networkMapCache.getNodesByLegalIdentityKey(nodeA.services.legalIdentityKey).singleOrNull(), nodeA.info)
+        assertEquals(nodeA.services.networkMapCache.getNodesByLegalIdentityKey(nodeA.info.chooseIdentity().owningKey).singleOrNull(), nodeA.info)
 
         nodeA.database.transaction {
             nodeA.services.networkMapCache.addNode(nodeB.info)
         }
         // The details of node B write over those for node A
-        assertEquals(nodeA.services.networkMapCache.getNodesByLegalIdentityKey(nodeA.services.legalIdentityKey).singleOrNull(), nodeB.info)
+        assertEquals(nodeA.services.networkMapCache.getNodesByLegalIdentityKey(nodeA.info.chooseIdentity().owningKey).singleOrNull(), nodeB.info)
     }
 
     @Test
@@ -63,7 +64,7 @@ class InMemoryNetworkMapCacheTest {
         val expected = n1.info
 
         mockNet.runNetwork()
-        val actual = node0Cache.getNodeByLegalIdentity(n1.services.legalIdentity.party)
+        val actual = node0Cache.getNodeByLegalIdentity(n1.info.chooseIdentity())
         assertEquals(expected, actual)
 
         // TODO: Should have a test case with anonymous lookup

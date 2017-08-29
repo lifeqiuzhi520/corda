@@ -17,6 +17,7 @@ import net.corda.core.utilities.ProgressTracker
 import net.corda.core.utilities.loggerFor
 import net.corda.core.utilities.unwrap
 import net.corda.flows.*
+import net.corda.testing.chooseIdentity
 import java.util.*
 
 // DOCSTART CustomVaultQuery
@@ -132,12 +133,12 @@ object TopupIssuerFlow {
             val notaryParty = serviceHub.networkMapCache.notaryNodes[0].notaryIdentity
             // invoke Cash subflow to issue Asset
             progressTracker.currentStep = ISSUING
-            val issueRecipient = serviceHub.legalIdentity.party
+            val issueRecipient = serviceHub.myInfo.chooseIdentity()
             val issueCashFlow = CashIssueFlow(amount, issuerPartyRef, issueRecipient, notaryParty, anonymous = false)
             val issueTx = subFlow(issueCashFlow)
             // NOTE: issueCashFlow performs a Broadcast (which stores a local copy of the txn to the ledger)
             // short-circuit when issuing to self
-            if (issueTo == serviceHub.legalIdentity.party)
+            if (issueTo == serviceHub.myInfo.chooseIdentity())
                 return issueTx
             // now invoke Cash subflow to Move issued assetType to issue requester
             progressTracker.currentStep = TRANSFERRING

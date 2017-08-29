@@ -113,9 +113,7 @@ interface ServiceHub : ServicesForResolution {
         }
     }
 
-    /** Node's primary identity */
-    val legalIdentity: PartyAndCertificate
-
+    // TODO get rid of that too
     /**
      * Helper property to shorten code for fetching the the [PublicKey] portion of the
      * Node's primary signing identity.

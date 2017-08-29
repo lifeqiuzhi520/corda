@@ -168,14 +168,12 @@ interface DriverDSLInternalInterface : DriverDSLExposedInterface {
 
 sealed class NodeHandle {
     abstract val nodeInfo: NodeInfo
-    abstract val mainIdentity: Party
     abstract val rpc: CordaRPCOps
     abstract val configuration: FullNodeConfiguration
     abstract val webAddress: NetworkHostAndPort
 
     data class OutOfProcess(
             override val nodeInfo: NodeInfo,
-            override val mainIdentity: Party,
             override val rpc: CordaRPCOps,
             override val configuration: FullNodeConfiguration,
             override val webAddress: NetworkHostAndPort,
@@ -185,7 +183,6 @@ sealed class NodeHandle {
 
     data class InProcess(
             override val nodeInfo: NodeInfo,
-            override val mainIdentity: Party,
             override val rpc: CordaRPCOps,
             override val configuration: FullNodeConfiguration,
             override val webAddress: NetworkHostAndPort,
@@ -722,7 +719,7 @@ class DriverDSL(
             return nodeAndThreadFuture.flatMap { (node, thread) ->
                 establishRpc(nodeConfiguration.p2pAddress, nodeConfiguration, openFuture()).flatMap { rpc ->
                     rpc.waitUntilRegisteredWithNetworkMap().map {
-                        NodeHandle.InProcess(rpc.nodeInfo(), rpc.nodeMainIdentity(), rpc, nodeConfiguration, webAddress, node, thread)
+                        NodeHandle.InProcess(rpc.nodeInfo(), rpc, nodeConfiguration, webAddress, node, thread)
                     }
                 }
             }
@@ -745,7 +742,7 @@ class DriverDSL(
                             throw ListenProcessDeathException(nodeConfiguration.p2pAddress, process)
                         }
                         processDeathFuture.cancel(false)
-                        NodeHandle.OutOfProcess(rpc.nodeInfo(), rpc.nodeMainIdentity(), rpc, nodeConfiguration, webAddress, debugPort, process)
+                        NodeHandle.OutOfProcess(rpc.nodeInfo(), rpc, nodeConfiguration, webAddress, debugPort, process)
                     }
                 }
             }

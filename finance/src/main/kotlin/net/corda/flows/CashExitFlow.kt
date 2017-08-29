@@ -40,7 +40,7 @@ class CashExitFlow(val amount: Amount<Currency>, val issueRef: OpaqueBytes, prog
     override fun call(): AbstractCashFlow.Result {
         progressTracker.currentStep = GENERATING_TX
         val builder: TransactionBuilder = TransactionBuilder(notary = null as Party?)
-        val issuer = serviceHub.legalIdentity.party.ref(issueRef)
+        val issuer = me.party.ref(issueRef)
         val exitStates = Cash.unconsumedCashStatesForSpending(serviceHub, amount, setOf(issuer.party), builder.notary, builder.lockId, setOf(issuer.reference))
         val signers = try {
             Cash().generateExit(

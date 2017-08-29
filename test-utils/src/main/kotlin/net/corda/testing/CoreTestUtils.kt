@@ -9,6 +9,7 @@ import net.corda.core.contracts.StateRef
 import net.corda.core.crypto.*
 import net.corda.core.identity.Party
 import net.corda.core.identity.PartyAndCertificate
+import net.corda.core.node.NodeInfo
 import net.corda.core.node.ServiceHub
 import net.corda.core.node.services.IdentityService
 import net.corda.core.transactions.TransactionBuilder
@@ -216,3 +217,10 @@ fun getTestPartyAndCertificate(party: Party, trustRoot: CertificateAndKeyPair = 
 fun getTestPartyAndCertificate(name: X500Name, publicKey: PublicKey, trustRoot: CertificateAndKeyPair = DUMMY_CA): PartyAndCertificate {
     return getTestPartyAndCertificate(Party(name, publicKey), trustRoot)
 }
+
+/**
+ * Until we have proper handling of multiple identities per node, for tests we use the first identity as special one.
+ * TODO: Should be removed after multiple identities are introduced.
+ */
+fun NodeInfo.chooseIdentityAndCert(): PartyAndCertificate = legalIdentitiesAndCerts.first()
+fun NodeInfo.chooseIdentity(): Party = legalIdentitiesAndCerts.first().party

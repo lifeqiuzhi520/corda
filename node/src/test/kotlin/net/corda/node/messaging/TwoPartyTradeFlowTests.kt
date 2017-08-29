@@ -95,8 +95,8 @@ class TwoPartyTradeFlowTests {
             val aliceNode = basketOfNodes.partyNodes[0]
             val bobNode = basketOfNodes.partyNodes[1]
             val bankNode = basketOfNodes.partyNodes[2]
-            val cashIssuer = bankNode.services.legalIdentity.party.ref(1)
-            val cpIssuer = bankNode.services.legalIdentity.party.ref(1, 2, 3)
+            val cashIssuer = bankNode.info.chooseIdentity().ref(1)
+            val cpIssuer = bankNode.info.chooseIdentity().ref(1, 2, 3)
 
             aliceNode.disableDBCloseOnStop()
             bobNode.disableDBCloseOnStop()
@@ -107,8 +107,8 @@ class TwoPartyTradeFlowTests {
             }
 
             val alicesFakePaper = aliceNode.database.transaction {
-                fillUpForSeller(false, cpIssuer, aliceNode.services.legalIdentity.party,
-                        1200.DOLLARS `issued by` bankNode.services.legalIdentity.party.ref(0), null, notaryNode.info.notaryIdentity).second
+                fillUpForSeller(false, cpIssuer, aliceNode.info.chooseIdentity(),
+                        1200.DOLLARS `issued by` bankNode.info.chooseIdentity().ref(0), null, notaryNode.info.notaryIdentity).second
             }
 
             insertFakeTransactions(alicesFakePaper, aliceNode, notaryNode, bankNode)
@@ -143,8 +143,8 @@ class TwoPartyTradeFlowTests {
             val aliceNode = mockNet.createPartyNode(notaryNode.network.myAddress, ALICE.name)
             val bobNode = mockNet.createPartyNode(notaryNode.network.myAddress, BOB.name)
             val bankNode = mockNet.createPartyNode(notaryNode.network.myAddress, BOC.name)
-            val cashIssuer = bankNode.services.legalIdentity.party.ref(1)
-            val cpIssuer = bankNode.services.legalIdentity.party.ref(1, 2, 3)
+            val cashIssuer = bankNode.info.chooseIdentity().ref(1)
+            val cpIssuer = bankNode.info.chooseIdentity().ref(1, 2, 3)
 
             aliceNode.disableDBCloseOnStop()
             bobNode.disableDBCloseOnStop()
@@ -155,8 +155,8 @@ class TwoPartyTradeFlowTests {
                 }
 
             val alicesFakePaper = aliceNode.database.transaction {
-                fillUpForSeller(false, cpIssuer, aliceNode.services.legalIdentity.party,
-                        1200.DOLLARS `issued by` bankNode.services.legalIdentity.party.ref(0), null, notaryNode.info.notaryIdentity).second
+                fillUpForSeller(false, cpIssuer, aliceNode.info.chooseIdentity(),
+                        1200.DOLLARS `issued by` bankNode.info.chooseIdentity().ref(0), null, notaryNode.info.notaryIdentity).second
             }
 
             insertFakeTransactions(alicesFakePaper, aliceNode, notaryNode, bankNode)
@@ -197,11 +197,11 @@ class TwoPartyTradeFlowTests {
             val aliceNode = mockNet.createPartyNode(notaryNode.network.myAddress, ALICE.name)
             var bobNode = mockNet.createPartyNode(notaryNode.network.myAddress, BOB.name)
             val bankNode = mockNet.createPartyNode(notaryNode.network.myAddress, BOC.name)
-            val cashIssuer = bankNode.services.legalIdentity.party.ref(1)
-            val cpIssuer = bankNode.services.legalIdentity.party.ref(1, 2, 3)
+            val cashIssuer = bankNode.info.chooseIdentity().ref(1)
+            val cpIssuer = bankNode.info.chooseIdentity().ref(1, 2, 3)
 
-            aliceNode.services.identityService.verifyAndRegisterIdentity(bobNode.services.legalIdentity)
-            bobNode.services.identityService.verifyAndRegisterIdentity(aliceNode.services.legalIdentity)
+            aliceNode.services.identityService.verifyAndRegisterIdentity(bobNode.info.chooseIdentityAndCert())
+            bobNode.services.identityService.verifyAndRegisterIdentity(aliceNode.info.chooseIdentityAndCert())
             aliceNode.disableDBCloseOnStop()
             bobNode.disableDBCloseOnStop()
 
@@ -215,8 +215,8 @@ class TwoPartyTradeFlowTests {
                         issuedBy = cashIssuer)
             }
             val alicesFakePaper = aliceNode.database.transaction {
-                fillUpForSeller(false, cpIssuer, aliceNode.services.legalIdentity.party,
-                        1200.DOLLARS `issued by` bankNode.services.legalIdentity.party.ref(0), null, notaryNode.info.notaryIdentity).second
+                fillUpForSeller(false, cpIssuer, aliceNode.info.chooseIdentity(),
+                        1200.DOLLARS `issued by` bankNode.info.chooseIdentity().ref(0), null, notaryNode.info.notaryIdentity).second
             }
             insertFakeTransactions(alicesFakePaper, aliceNode, notaryNode, bankNode)
             val aliceFuture = runBuyerAndSeller(notaryNode, aliceNode, bobNode, "alice's paper".outputStateAndRef()).sellerResult
@@ -321,7 +321,7 @@ class TwoPartyTradeFlowTests {
         val aliceNode = makeNodeWithTracking(notaryNode.network.myAddress, ALICE.name)
         val bobNode = makeNodeWithTracking(notaryNode.network.myAddress, BOB.name)
         val bankNode = makeNodeWithTracking(notaryNode.network.myAddress, BOC.name)
-        val issuer = bankNode.services.legalIdentity.party.ref(1, 2, 3)
+        val issuer = bankNode.info.chooseIdentity().ref(1, 2, 3)
 
         ledger(aliceNode.services, initialiseSerialization = false) {
 
@@ -340,8 +340,8 @@ class TwoPartyTradeFlowTests {
                     notaryNode.info.notaryIdentity).second
             val bobsSignedTxns = insertFakeTransactions(bobsFakeCash, bobNode, notaryNode, bankNode)
             val alicesFakePaper = aliceNode.database.transaction {
-                fillUpForSeller(false, issuer, aliceNode.services.legalIdentity.party,
-                        1200.DOLLARS `issued by` bankNode.services.legalIdentity.party.ref(0), attachmentID, notaryNode.info.notaryIdentity).second
+                fillUpForSeller(false, issuer, aliceNode.info.chooseIdentity(),
+                        1200.DOLLARS `issued by` bankNode.info.chooseIdentity().ref(0), attachmentID, notaryNode.info.notaryIdentity).second
             }
             val alicesSignedTxns = insertFakeTransactions(alicesFakePaper, aliceNode, notaryNode, bankNode)
 
@@ -422,7 +422,7 @@ class TwoPartyTradeFlowTests {
         val aliceNode = makeNodeWithTracking(notaryNode.network.myAddress, ALICE.name)
         val bobNode = makeNodeWithTracking(notaryNode.network.myAddress, BOB.name)
         val bankNode = makeNodeWithTracking(notaryNode.network.myAddress, BOC.name)
-        val issuer = bankNode.services.legalIdentity.party.ref(1, 2, 3)
+        val issuer = bankNode.info.chooseIdentity().ref(1, 2, 3)
 
         ledger(aliceNode.services, initialiseSerialization = false) {
 
@@ -443,8 +443,8 @@ class TwoPartyTradeFlowTests {
             insertFakeTransactions(bobsFakeCash, bobNode, notaryNode, bankNode)
 
             val alicesFakePaper = aliceNode.database.transaction {
-                fillUpForSeller(false, issuer, aliceNode.services.legalIdentity.party,
-                        1200.DOLLARS `issued by` bankNode.services.legalIdentity.party.ref(0), attachmentID, notaryNode.info.notaryIdentity).second
+                fillUpForSeller(false, issuer, aliceNode.info.chooseIdentity(),
+                        1200.DOLLARS `issued by` bankNode.info.chooseIdentity().ref(0), attachmentID, notaryNode.info.notaryIdentity).second
             }
 
             insertFakeTransactions(alicesFakePaper, aliceNode, notaryNode, bankNode)
@@ -519,11 +519,11 @@ class TwoPartyTradeFlowTests {
                                   buyerNode: MockNetwork.MockNode,
                                   assetToSell: StateAndRef<OwnableState>): RunResult {
         val anonymousSeller = sellerNode.services.let { serviceHub ->
-            serviceHub.keyManagementService.freshKeyAndCert(serviceHub.legalIdentity, false)
+            serviceHub.keyManagementService.freshKeyAndCert(serviceHub.myInfo.chooseIdentityAndCert(), false)
         }.party.anonymise()
         val buyerFlows: Observable<BuyerAcceptor> = buyerNode.registerInitiatedFlow(BuyerAcceptor::class.java)
         val firstBuyerFiber = buyerFlows.toFuture().map { it.stateMachine }
-        val seller = SellerInitiator(buyerNode.services.legalIdentity.party, notaryNode.info, assetToSell, 1000.DOLLARS, anonymousSeller)
+        val seller = SellerInitiator(buyerNode.info.chooseIdentity(), notaryNode.info, assetToSell, 1000.DOLLARS, anonymousSeller)
         val sellerResult = sellerNode.services.startFlow(seller).resultFuture
         return RunResult(firstBuyerFiber, sellerResult, seller.stateMachine.id)
     }
@@ -567,14 +567,14 @@ class TwoPartyTradeFlowTests {
         val aliceNode = mockNet.createPartyNode(notaryNode.network.myAddress, ALICE.name)
         val bobNode = mockNet.createPartyNode(notaryNode.network.myAddress, BOB.name)
         val bankNode = mockNet.createPartyNode(notaryNode.network.myAddress, BOC.name)
-        val issuer = bankNode.services.legalIdentity.party.ref(1, 2, 3)
+        val issuer = bankNode.info.chooseIdentity().ref(1, 2, 3)
 
         val bobsBadCash = bobNode.database.transaction {
-            fillUpForBuyer(bobError, issuer, bobNode.services.legalIdentity.party,
+            fillUpForBuyer(bobError, issuer, bobNode.info.chooseIdentity(),
                     notaryNode.info.notaryIdentity).second
         }
         val alicesFakePaper = aliceNode.database.transaction {
-            fillUpForSeller(aliceError, issuer, aliceNode.services.legalIdentity.party,
+            fillUpForSeller(aliceError, issuer, aliceNode.info.chooseIdentity(),
                     1200.DOLLARS `issued by` issuer, null, notaryNode.info.notaryIdentity).second
         }
 
@@ -612,7 +612,7 @@ class TwoPartyTradeFlowTests {
             sigs.add(node.services.keyManagementService.sign(SignableData(id, SignatureMetadata(1, Crypto.findSignatureScheme(node.services.legalIdentityKey).schemeNumberID)), node.services.legalIdentityKey))
             sigs.add(notaryNode.services.keyManagementService.sign(SignableData(id, SignatureMetadata(1, Crypto.findSignatureScheme(notaryNode.services.notaryIdentityKey).schemeNumberID)), notaryNode.services.notaryIdentityKey))
             extraSigningNodes.forEach { currentNode ->
-                sigs.add(currentNode.services.keyManagementService.sign(SignableData(id, SignatureMetadata(1, Crypto.findSignatureScheme(currentNode.services.legalIdentity.owningKey).schemeNumberID)), currentNode.services.legalIdentityKey))
+                sigs.add(currentNode.services.keyManagementService.sign(SignableData(id, SignatureMetadata(1, Crypto.findSignatureScheme(currentNode.info.chooseIdentity().owningKey).schemeNumberID)), currentNode.services.legalIdentityKey))
             }
             SignedTransaction(it, sigs)
         }

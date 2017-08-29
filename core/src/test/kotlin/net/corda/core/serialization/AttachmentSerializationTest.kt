@@ -19,6 +19,7 @@ import net.corda.node.services.config.NodeConfiguration
 import net.corda.node.services.network.NetworkMapService
 import net.corda.node.services.persistence.NodeAttachmentService
 import net.corda.node.services.persistence.schemas.requery.AttachmentEntity
+import net.corda.testing.chooseIdentity
 import net.corda.testing.node.MockNetwork
 import org.junit.After
 import org.junit.Before
@@ -97,7 +98,7 @@ class AttachmentSerializationTest {
 
     @InitiatingFlow
     private abstract class ClientLogic(server: MockNetwork.MockNode) : FlowLogic<ClientResult>() {
-        internal val server = server.services.legalIdentity.party
+        internal val server = server.info.chooseIdentity()
 
         @Suspendable
         internal fun communicate() {

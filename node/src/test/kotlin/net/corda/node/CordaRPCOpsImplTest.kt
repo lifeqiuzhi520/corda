@@ -24,6 +24,7 @@ import net.corda.node.services.startFlowPermission
 import net.corda.node.services.transactions.SimpleNotaryService
 import net.corda.nodeapi.PermissionException
 import net.corda.nodeapi.User
+import net.corda.testing.chooseIdentity
 import net.corda.testing.expect
 import net.corda.testing.expectEvents
 import net.corda.testing.node.MockNetwork
@@ -91,7 +92,7 @@ class CordaRPCOpsImplTest {
 
         // Tell the monitoring service node to issue some cash
         val anonymous = false
-        val recipient = aliceNode.services.legalIdentity.party
+        val recipient = aliceNode.info.chooseIdentity()
         val result = rpc.startFlow(::CashIssueFlow, Amount(quantity, GBP), ref, recipient, notaryNode.info.notaryIdentity, anonymous)
         mockNet.runNetwork()
 
@@ -110,7 +111,7 @@ class CordaRPCOpsImplTest {
 
         result.returnValue.getOrThrow()
         val expectedState = Cash.State(Amount(quantity,
-                Issued(aliceNode.services.legalIdentity.party.ref(ref), GBP)),
+                Issued(aliceNode.info.chooseIdentity().ref(ref), GBP)),
                 recipient)
 
         // Query vault via RPC
@@ -131,14 +132,14 @@ class CordaRPCOpsImplTest {
         val result = rpc.startFlow(::CashIssueFlow,
                 100.DOLLARS,
                 OpaqueBytes(ByteArray(1, { 1 })),
-                aliceNode.services.legalIdentity.party,
+                aliceNode.info.chooseIdentity(),
                 notaryNode.info.notaryIdentity,
                 false
         )
 
         mockNet.runNetwork()
 
-        rpc.startFlow(::CashPaymentFlow, 100.DOLLARS, aliceNode.services.legalIdentity.party, anonymous)
+        rpc.startFlow(::CashPaymentFlow, 100.DOLLARS, aliceNode.info.chooseIdentity(), anonymous)
 
         mockNet.runNetwork()
 
@@ -211,7 +212,7 @@ class CordaRPCOpsImplTest {
             rpc.startFlow(::CashIssueFlow,
                     Amount(100, USD),
                     OpaqueBytes(ByteArray(1, { 1 })),
-                    aliceNode.services.legalIdentity.party,
+                    aliceNode.info.chooseIdentity(),
                     notaryNode.info.notaryIdentity,
                     false
             )

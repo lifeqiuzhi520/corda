@@ -68,7 +68,7 @@ class StandaloneCordaRPClientTest {
         connection = notary.connect()
         rpcProxy = connection.proxy
         notaryNode = fetchNotaryIdentity()
-        notaryNodeIdentity = rpcProxy.nodeMainIdentity()
+        notaryNodeIdentity = rpcProxy.nodeInfo().legalIdentitiesAndCerts.first().party
     }
 
     @After

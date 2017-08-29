@@ -55,7 +55,7 @@ public class StandaloneCordaRPCJavaClientTest {
         connection = notary.connect();
         rpcProxy = connection.getProxy();
         notaryNode = fetchNotaryIdentity();
-        notaryNodeIdentity = rpcProxy.nodeMainIdentity();
+        notaryNodeIdentity = rpcProxy.nodeInfo().getLegalIdentities().get(0);
     }
 
     @After

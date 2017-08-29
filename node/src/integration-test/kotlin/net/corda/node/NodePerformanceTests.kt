@@ -16,6 +16,7 @@ import net.corda.flows.CashPaymentFlow
 import net.corda.node.services.startFlowPermission
 import net.corda.node.services.transactions.SimpleNotaryService
 import net.corda.nodeapi.User
+import net.corda.testing.chooseIdentity
 import net.corda.testing.driver.NodeHandle
 import net.corda.testing.driver.driver
 import net.corda.testing.performance.startPublishingFixedRateInjector
@@ -111,12 +112,12 @@ class NodePerformanceTests {
             a.rpcClientToNode().use("A", "A") { connection ->
                 println("ISSUING")
                 val doneFutures = (1..100).toList().parallelStream().map {
-                    connection.proxy.startFlow(::CashIssueFlow, 1.DOLLARS, OpaqueBytes.of(0), a.mainIdentity, a.nodeInfo.notaryIdentity).returnValue
+                    connection.proxy.startFlow(::CashIssueFlow, 1.DOLLARS, OpaqueBytes.of(0), a.nodeInfo.chooseIdentity(), a.nodeInfo.notaryIdentity).returnValue
                 }.toList()
                 doneFutures.transpose().get()
                 println("STARTING PAYMENT")
                 startPublishingFixedRateInjector(metricRegistry, 8, 5.minutes, 100L / TimeUnit.SECONDS) {
-                    connection.proxy.startFlow(::CashPaymentFlow, 1.DOLLARS, a.mainIdentity).returnValue.get()
+                    connection.proxy.startFlow(::CashPaymentFlow, 1.DOLLARS, a.nodeInfo.chooseIdentity()).returnValue.get()
                 }
             }
 

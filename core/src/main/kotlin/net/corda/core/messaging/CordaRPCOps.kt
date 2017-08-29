@@ -204,11 +204,6 @@ interface CordaRPCOps : RPCOps {
     fun <T : Any> startTrackedFlowDynamic(logicType: Class<out FlowLogic<T>>, vararg args: Any?): FlowProgressHandle<T>
 
     /**
-     * Returns Node's identity, assuming this will not change while the node is running.
-     */
-    fun nodeMainIdentity(): Party
-
-    /**
      * Returns Node's NodeInfo, assuming this will not change while the node is running.
      */
     fun nodeInfo(): NodeInfo

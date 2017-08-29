@@ -25,7 +25,6 @@ import net.corda.core.serialization.SingletonSerializeAsToken
 import net.corda.core.transactions.SignedTransaction
 import net.corda.core.utilities.NetworkHostAndPort
 import net.corda.core.utilities.debug
-import net.corda.core.utilities.toNonEmptySet
 import net.corda.flows.CashExitFlow
 import net.corda.flows.CashIssueFlow
 import net.corda.flows.CashPaymentFlow
@@ -128,6 +127,7 @@ abstract class AbstractNode(open val configuration: NodeConfiguration,
     val services: ServiceHubInternal get() = _services
 
     private lateinit var _services: ServiceHubInternalImpl
+    lateinit var legalIdentity: PartyAndCertificate
     lateinit var info: NodeInfo
     lateinit var checkpointStorage: CheckpointStorage
     lateinit var smm: StateMachineManager
@@ -422,7 +422,8 @@ abstract class AbstractNode(open val configuration: NodeConfiguration,
         _services = ServiceHubInternalImpl()
         attachments = NodeAttachmentService(configuration.dataSourceProperties, services.monitoringService.metrics, configuration.database)
         network = makeMessagingService()
-        info = makeInfo()
+        legalIdentity = obtainLegalIdentity()
+        info = makeInfo(legalIdentity)
 
         val tokenizableServices = mutableListOf(attachments, network, services.vaultService, services.vaultQueryService,
                 services.keyManagementService, services.identityService, platformClock, services.schedulerService)
@@ -490,11 +491,12 @@ abstract class AbstractNode(open val configuration: NodeConfiguration,
         HibernateObserver(services.vaultService.rawUpdates, HibernateConfiguration(services.schemaService, configuration.database ?: Properties(), {services.identityService}))
     }
 
-    private fun makeInfo(): NodeInfo {
+    private fun makeInfo(legalIdentity: PartyAndCertificate): NodeInfo {
         val advertisedServiceEntries = makeServiceEntries()
-        val allIdentitiesSet = advertisedServiceEntries.map { it.identity } + services.legalIdentity // TODO Will we keep service identities here, for example notaries?
+        val allIdentitiesList = mutableListOf(legalIdentity)
+        allIdentitiesList.addAll(advertisedServiceEntries.map { it.identity }) // TODO Will we keep service identities here, for example notaries?
         val addresses = myAddresses() // TODO There is no support for multiple IP addresses yet.
-        return NodeInfo(addresses, allIdentitiesSet, platformVersion, advertisedServiceEntries, findMyLocation())
+        return NodeInfo(addresses, allIdentitiesList, platformVersion, advertisedServiceEntries, findMyLocation())
     }
 
     /**
@@ -602,7 +604,7 @@ abstract class AbstractNode(open val configuration: NodeConfiguration,
             "Initial network map address must indicate a node that provides a network map service"
         }
         val address: SingleMessageRecipient = networkMapAddress ?:
-                network.getAddressOfParty(PartyInfo.SingleNode(services.legalIdentity.party, info.addresses)) as SingleMessageRecipient
+                network.getAddressOfParty(PartyInfo.SingleNode(services.myInfo.legalIdentitiesAndCerts.first().party, info.addresses)) as SingleMessageRecipient
         // Register for updates, even if we're the one running the network map.
         return sendNetworkMapRegistration(address).flatMap { (error) ->
             check(error == null) { "Unable to register with the network map service: $error" }
@@ -656,7 +658,7 @@ abstract class AbstractNode(open val configuration: NodeConfiguration,
         val caCertificates: Array<X509Certificate> = listOf(legalIdentity.certificate.cert, clientCa?.certificate?.cert)
                 .filterNotNull()
                 .toTypedArray()
-        val service = InMemoryIdentityService(setOf(services.legalIdentity), trustRoot = trustRoot, caCertificates = *caCertificates)
+        val service = InMemoryIdentityService(info.legalIdentitiesAndCerts.toSet(), trustRoot = trustRoot, caCertificates = *caCertificates)
         services.networkMapCache.partyNodes.forEach { it.legalIdentitiesAndCerts.forEach { service.verifyAndRegisterIdentity(it) } }
         services.networkMapCache.changed.subscribe { mapChange ->
             // TODO how should we handle network map removal
@@ -784,7 +786,6 @@ abstract class AbstractNode(open val configuration: NodeConfiguration,
         // the identity key. But the infrastructure to make that easy isn't here yet.
         override val keyManagementService by lazy { makeKeyManagementService(identityService) }
         override val schedulerService by lazy { NodeSchedulerService(this, unfinishedSchedules = busyNodeLatch, serverThread = serverThread) }
-        override val legalIdentity = obtainLegalIdentity()
         override val identityService by lazy {
             val trustStore = KeyStoreWrapper(configuration.trustStoreFile, configuration.trustStorePassword)
             val caKeyStore = KeyStoreWrapper(configuration.nodeKeystore, configuration.keyStorePassword)

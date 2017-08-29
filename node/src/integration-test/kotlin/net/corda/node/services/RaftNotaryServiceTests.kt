@@ -13,6 +13,7 @@ import net.corda.core.internal.concurrent.transpose
 import net.corda.core.utilities.getOrThrow
 import net.corda.core.transactions.TransactionBuilder
 import net.corda.node.internal.AbstractNode
+import net.corda.testing.chooseIdentity
 import net.corda.testing.node.NodeBasedTest
 import org.bouncycastle.asn1.x500.X500Name
 import org.junit.Test
@@ -41,7 +42,7 @@ class RaftNotaryServiceTests : NodeBasedTest() {
         firstSpend.resultFuture.getOrThrow()
 
         val secondSpendBuilder = TransactionBuilder(notaryParty).withItems(inputState).run {
-            val dummyState = DummyContract.SingleOwnerState(0, bankA.services.legalIdentity.party)
+            val dummyState = DummyContract.SingleOwnerState(0, bankA.info.chooseIdentity())
             addOutputState(dummyState)
             this
         }
@@ -55,7 +56,7 @@ class RaftNotaryServiceTests : NodeBasedTest() {
 
     private fun issueState(node: AbstractNode, notary: Party): StateAndRef<*> {
         return node.database.transaction {
-            val builder = DummyContract.generateInitial(Random().nextInt(), notary, node.services.legalIdentity.party.ref(0))
+            val builder = DummyContract.generateInitial(Random().nextInt(), notary, node.info.chooseIdentity().ref(0))
             val stx = node.services.signInitialTransaction(builder)
             node.services.recordTransactions(stx)
             StateAndRef(builder.outputStates().first(), StateRef(stx.id, 0))

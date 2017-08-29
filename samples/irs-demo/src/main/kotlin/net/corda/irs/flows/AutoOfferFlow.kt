@@ -64,7 +64,7 @@ object AutoOfferFlow {
         }
 
         private fun <T : AbstractParty> notUs(parties: List<T>): List<T> {
-            return parties.filter { serviceHub.legalIdentity.party != it }
+            return parties.filter { me.party != it }
         }
     }
 

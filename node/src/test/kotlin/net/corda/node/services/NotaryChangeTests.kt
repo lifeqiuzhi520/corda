@@ -14,6 +14,7 @@ import net.corda.node.internal.AbstractNode
 import net.corda.node.services.network.NetworkMapService
 import net.corda.node.services.transactions.SimpleNotaryService
 import net.corda.testing.DUMMY_NOTARY
+import net.corda.testing.chooseIdentity
 import net.corda.testing.contracts.DummyContract
 import net.corda.testing.getTestPartyAndCertificate
 import net.corda.testing.node.MockNetwork
@@ -130,7 +131,7 @@ class NotaryChangeTests {
     }
 
     private fun issueEncumberedState(node: AbstractNode, notaryNode: AbstractNode): WireTransaction {
-        val owner = node.services.legalIdentity.party.ref(0)
+        val owner = node.info.chooseIdentity().ref(0)
         val notary = notaryNode.info.notaryIdentity
 
         val stateA = DummyContract.SingleOwnerState(Random().nextInt(), owner.party)
@@ -158,7 +159,7 @@ class NotaryChangeTests {
 }
 
 fun issueState(node: AbstractNode, notaryNode: AbstractNode): StateAndRef<*> {
-    val tx = DummyContract.generateInitial(Random().nextInt(), notaryNode.info.notaryIdentity, node.services.legalIdentity.party.ref(0))
+    val tx = DummyContract.generateInitial(Random().nextInt(), notaryNode.info.notaryIdentity, node.info.chooseIdentity().ref(0))
     val signedByNode = node.services.signInitialTransaction(tx)
     val stx = notaryNode.services.addSignature(signedByNode, notaryNode.services.notaryIdentityKey)
     node.services.recordTransactions(stx)
@@ -167,7 +168,7 @@ fun issueState(node: AbstractNode, notaryNode: AbstractNode): StateAndRef<*> {
 
 fun issueMultiPartyState(nodeA: AbstractNode, nodeB: AbstractNode, notaryNode: AbstractNode): StateAndRef<DummyContract.MultiOwnerState> {
     val state = TransactionState(DummyContract.MultiOwnerState(0,
-            listOf(nodeA.services.legalIdentity.party, nodeB.services.legalIdentity.party)), notaryNode.info.notaryIdentity)
+            listOf(nodeA.info.chooseIdentity(), nodeB.info.chooseIdentity())), notaryNode.info.notaryIdentity)
     val tx = TransactionBuilder(notary = notaryNode.info.notaryIdentity).withItems(state)
     val signedByA = nodeA.services.signInitialTransaction(tx)
     val signedByAB = nodeB.services.addSignature(signedByA)
@@ -179,7 +180,7 @@ fun issueMultiPartyState(nodeA: AbstractNode, nodeB: AbstractNode, notaryNode: A
 }
 
 fun issueInvalidState(node: AbstractNode, notary: Party): StateAndRef<*> {
-    val tx = DummyContract.generateInitial(Random().nextInt(), notary, node.services.legalIdentity.party.ref(0))
+    val tx = DummyContract.generateInitial(Random().nextInt(), notary, node.info.chooseIdentity().ref(0))
     tx.setTimeWindow(Instant.now(), 30.seconds)
     val stx = node.services.signInitialTransaction(tx)
     node.services.recordTransactions(stx)

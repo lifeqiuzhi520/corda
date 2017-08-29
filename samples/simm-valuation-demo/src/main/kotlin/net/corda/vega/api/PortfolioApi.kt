@@ -34,7 +34,7 @@ import javax.ws.rs.core.Response
 
 @Path("simmvaluationdemo")
 class PortfolioApi(val rpc: CordaRPCOps) {
-    private val ownParty: Party get() = rpc.nodeMainIdentity()
+    private val ownParty: Party get() = rpc.nodeInfo().legalIdentitiesAndCerts.first().party
     private val portfolioUtils = PortfolioApiUtils(ownParty)
 
     private inline fun <reified T : DealState> dealsWith(party: AbstractParty): List<StateAndRef<T>> {

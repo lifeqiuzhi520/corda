@@ -14,6 +14,7 @@ import net.corda.node.services.startFlowPermission
 import net.corda.node.services.transactions.SimpleNotaryService
 import net.corda.nodeapi.User
 import net.corda.testing.BOC
+import net.corda.testing.chooseIdentity
 import net.corda.testing.driver.poll
 import net.corda.testing.node.NodeBasedTest
 import net.corda.traderdemo.flow.BuyerFlow
@@ -56,8 +57,8 @@ class TraderDemoTest : NodeBasedTest() {
         val expectedPaper = listOf(clientA.commercialPaperCount + 1, clientB.commercialPaperCount)
 
         // TODO: Enable anonymisation
-        clientBank.runIssuer(amount = 100.DOLLARS, buyerName = nodeA.services.legalIdentity.name, sellerName = nodeB.services.legalIdentity.name, notaryName = notaryNode.services.legalIdentity.name)
-        clientB.runSeller(buyerName = nodeA.services.legalIdentity.name, amount = 5.DOLLARS)
+        clientBank.runIssuer(amount = 100.DOLLARS, buyerName = nodeA.info.chooseIdentity().name, sellerName = nodeB.info.chooseIdentity().name, notaryName = notaryNode.info.chooseIdentity().name)
+        clientB.runSeller(buyerName = nodeA.info.chooseIdentity().name, amount = 5.DOLLARS)
 
         assertThat(clientA.cashCount).isGreaterThan(originalACash)
         assertThat(clientB.cashCount).isEqualTo(expectedBCash)

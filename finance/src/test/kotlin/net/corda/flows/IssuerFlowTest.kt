@@ -15,6 +15,7 @@ import net.corda.core.utilities.OpaqueBytes
 import net.corda.core.transactions.SignedTransaction
 import net.corda.core.utilities.getOrThrow
 import net.corda.flows.IssuerFlow.IssuanceRequester
+import net.corda.testing.chooseIdentity
 import net.corda.testing.expect
 import net.corda.testing.expectEvents
 import net.corda.testing.node.MockNetwork
@@ -68,7 +69,7 @@ class IssuerFlowTest(val anonymous: Boolean) {
 
             // using default IssueTo Party Reference
             val issuerResult = runIssuerAndIssueRequester(bankOfCordaNode, bankClientNode, 1000000.DOLLARS,
-                    bankClientNode.services.legalIdentity.party, OpaqueBytes.of(123), notary)
+                    bankClientNode.info.chooseIdentity(), OpaqueBytes.of(123), notary)
             issuerResult.get()
 
             Pair(vaultUpdatesBoc, vaultUpdatesBankClient)
@@ -110,7 +111,7 @@ class IssuerFlowTest(val anonymous: Boolean) {
         // try to issue an amount of a restricted currency
         assertFailsWith<FlowException> {
             runIssuerAndIssueRequester(bankOfCordaNode, bankClientNode, Amount(100000L, currency("BRL")),
-                    bankClientNode.services.legalIdentity.party, OpaqueBytes.of(123), notary).getOrThrow()
+                    bankClientNode.info.chooseIdentity(), OpaqueBytes.of(123), notary).getOrThrow()
         }
     }
 
@@ -123,7 +124,7 @@ class IssuerFlowTest(val anonymous: Boolean) {
 
             // using default IssueTo Party Reference
             runIssuerAndIssueRequester(bankOfCordaNode, bankOfCordaNode, 1000000.DOLLARS,
-                    bankOfCordaNode.services.legalIdentity.party, OpaqueBytes.of(123), notary).getOrThrow()
+                    bankOfCordaNode.info.chooseIdentity(), OpaqueBytes.of(123), notary).getOrThrow()
             vaultUpdatesBoc
         }
 
@@ -147,7 +148,7 @@ class IssuerFlowTest(val anonymous: Boolean) {
         val amounts = calculateRandomlySizedAmounts(10000.DOLLARS, 10, 10, Random())
         val handles = amounts.map { pennies ->
             runIssuerAndIssueRequester(bankOfCordaNode, bankClientNode, Amount(pennies, amount.token),
-                    bankClientNode.services.legalIdentity.party, OpaqueBytes.of(123), notary)
+                    bankClientNode.info.chooseIdentity(), OpaqueBytes.of(123), notary)
         }
         handles.forEach {
             require(it.get().stx is SignedTransaction)
@@ -161,7 +162,7 @@ class IssuerFlowTest(val anonymous: Boolean) {
                                            ref: OpaqueBytes,
                                            notaryParty: Party): CordaFuture<AbstractCashFlow.Result> {
         val issueToPartyAndRef = issueToParty.ref(ref)
-        val issueRequest = IssuanceRequester(amount, issueToParty, issueToPartyAndRef.reference, issuerNode.services.legalIdentity.party, notaryParty,
+        val issueRequest = IssuanceRequester(amount, issueToParty, issueToPartyAndRef.reference, issuerNode.info.chooseIdentity(), notaryParty,
                 anonymous)
         return issueToNode.services.startFlow(issueRequest).resultFuture
     }

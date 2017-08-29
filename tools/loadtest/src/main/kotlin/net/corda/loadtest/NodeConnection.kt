@@ -1,5 +1,6 @@
 package net.corda.loadtest
 
+import com.google.common.annotations.VisibleForTesting
 import com.jcraft.jsch.ChannelExec
 import com.jcraft.jsch.Session
 import net.corda.client.rpc.CordaRPCClient
@@ -39,7 +40,8 @@ class NodeConnection(val remoteNode: RemoteNode, private val jSchSession: Sessio
     private var rpcConnection: CordaRPCConnection? = null
     val proxy: CordaRPCOps get() = rpcConnection?.proxy ?: throw IllegalStateException("proxy requested, but the client is not running")
     val info: NodeInfo by lazy { proxy.nodeInfo() } // TODO used only when queried for advertised services
-    val mainIdentity: Party by lazy { proxy.nodeMainIdentity() }
+    @VisibleForTesting // TODO get rid of that
+    val mainIdentity: Party by lazy { info.legalIdentitiesAndCerts.first().party }
 
     fun <A> doWhileClientStopped(action: () -> A): A {
         val connection = rpcConnection

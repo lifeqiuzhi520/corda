@@ -7,6 +7,7 @@ import net.corda.core.contracts.Issued
 import net.corda.core.identity.Party
 import net.corda.core.transactions.TransactionBuilder
 import net.corda.core.utilities.getOrThrow
+import net.corda.testing.chooseIdentity
 import net.corda.testing.node.MockNetwork
 import net.corda.testing.node.MockServices
 import org.junit.After
@@ -41,11 +42,11 @@ class ManualFinalityFlowTests {
 
     @Test
     fun `finalise a simple transaction`() {
-        val amount = Amount(1000, Issued(nodeA.services.legalIdentity.party.ref(0), GBP))
+        val amount = Amount(1000, Issued(nodeA.info.chooseIdentity().ref(0), GBP))
         val builder = TransactionBuilder(notary)
-        Cash().generateIssue(builder, amount, nodeB.services.legalIdentity.party, notary)
+        Cash().generateIssue(builder, amount, nodeB.info.chooseIdentity(), notary)
         val stx = nodeA.services.signInitialTransaction(builder)
-        val flow = nodeA.services.startFlow(ManualFinalityFlow(stx, setOf(nodeC.services.legalIdentity.party)))
+        val flow = nodeA.services.startFlow(ManualFinalityFlow(stx, setOf(nodeC.info.chooseIdentity())))
         mockNet.runNetwork()
         val result = flow.resultFuture.getOrThrow()
         val notarisedTx = result.single()

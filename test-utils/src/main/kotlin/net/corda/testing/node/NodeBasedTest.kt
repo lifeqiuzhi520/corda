@@ -26,6 +26,7 @@ import net.corda.nodeapi.User
 import net.corda.nodeapi.config.parseAs
 import net.corda.testing.DUMMY_MAP
 import net.corda.testing.TestDependencyInjectionBase
+import net.corda.testing.chooseIdentity
 import net.corda.testing.driver.addressMustNotBeBoundFuture
 import net.corda.testing.getFreeLocalPorts
 import org.apache.logging.log4j.Level
@@ -104,7 +105,7 @@ abstract class NodeBasedTest : TestDependencyInjectionBase() {
                 mapOf(
                         "networkMapService" to mapOf(
                                 "address" to networkMapNode.configuration.p2pAddress.toString(),
-                                "legalName" to networkMapNode.services.legalIdentity.name.toString()
+                                "legalName" to networkMapNode.info.chooseIdentity().name.toString()
                         )
                 ) + configOverrides
         )

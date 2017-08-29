@@ -99,12 +99,11 @@ object IssuerFlow {
                                 anonymous: Boolean): AbstractCashFlow.Result {
             // invoke Cash subflow to issue Asset
             progressTracker.currentStep = ISSUING
-            val issueRecipient = serviceHub.legalIdentity.party
-            val issueCashFlow = CashIssueFlow(amount, issuerPartyRef, issueRecipient, notaryParty, anonymous)
+            val issueCashFlow = CashIssueFlow(amount, issuerPartyRef, me.party, notaryParty, anonymous)
             val issueTx = subFlow(issueCashFlow)
             // NOTE: issueCashFlow performs a Broadcast (which stores a local copy of the txn to the ledger)
             // short-circuit when issuing to self
-            if (issueTo == serviceHub.legalIdentity.party)
+            if (issueTo == me.party)
                 return issueTx
             // now invoke Cash subflow to Move issued assetType to issue requester
             progressTracker.currentStep = TRANSFERRING

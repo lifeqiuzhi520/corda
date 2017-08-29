@@ -105,7 +105,8 @@ open class NodeStartup(val args: Array<String>) {
         node.networkMapRegistrationFuture.thenMatch({
             val elapsed = (System.currentTimeMillis() - startTime) / 10 / 100.0
             // TODO: Replace this with a standard function to get an unambiguous rendering of the X.500 name.
-            val name = node.services.legalIdentity.name.orgName ?: node.services.legalIdentity.name.commonName
+            val nodeName = node.info.legalIdentitiesAndCerts.first().name
+            val name = nodeName.orgName ?: nodeName.commonName
             Node.printBasicNodeInfo("Node for \"$name\" started up and registered in $elapsed sec")
 
             // Don't start the shell if there's no console attached.

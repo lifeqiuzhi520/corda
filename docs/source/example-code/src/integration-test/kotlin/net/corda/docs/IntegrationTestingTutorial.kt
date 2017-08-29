@@ -69,7 +69,7 @@ class IntegrationTestingTutorial {
                     futures.push(aliceProxy.startFlow(::CashIssueFlow,
                             i.DOLLARS,
                             issueRef,
-                            bob.mainIdentity,
+                            bob.nodeInfo.chooseIdentity(),
                             notary.nodeInfo.notaryIdentity
                     ).returnValue)
                 }
@@ -93,7 +93,7 @@ class IntegrationTestingTutorial {
 
             // START 5
             for (i in 1..10) {
-                bobProxy.startFlow(::CashPaymentFlow, i.DOLLARS, alice.mainIdentity).returnValue.getOrThrow()
+                bobProxy.startFlow(::CashPaymentFlow, i.DOLLARS, alice.nodeInfo.chooseIdentity()).returnValue.getOrThrow()
             }
 
             aliceVaultUpdates.expectEvents {

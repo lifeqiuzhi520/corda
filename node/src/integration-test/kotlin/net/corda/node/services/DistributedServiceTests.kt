@@ -68,7 +68,7 @@ class DistributedServiceTests : DriverBasedTest() {
         aliceProxy = connectRpc(alice)
         val rpcClientsToNotaries = notaries.map(::connectRpc)
         notaryStateMachines = Observable.from(rpcClientsToNotaries.map { proxy ->
-            proxy.stateMachinesFeed().updates.map { Pair(proxy.nodeMainIdentity(), it) }
+            proxy.stateMachinesFeed().updates.map { Pair(proxy.nodeInfo().chooseIdentity(), it) }
         }).flatMap { it.onErrorResumeNext(Observable.empty()) }.bufferUntilSubscribed()
 
         runTest()
@@ -141,12 +141,12 @@ class DistributedServiceTests : DriverBasedTest() {
     private fun issueCash(amount: Amount<Currency>) {
         val issueHandle = aliceProxy.startFlow(
                 ::CashIssueFlow,
-                amount, OpaqueBytes.of(0), alice.mainIdentity, raftNotaryIdentity)
+                amount, OpaqueBytes.of(0), alice.nodeInfo.chooseIdentity(), raftNotaryIdentity)
         issueHandle.returnValue.getOrThrow()
     }
 
     private fun paySelf(amount: Amount<Currency>) {
-        val payHandle = aliceProxy.startFlow(::CashPaymentFlow, amount, alice.mainIdentity)
+        val payHandle = aliceProxy.startFlow(::CashPaymentFlow, amount, alice.nodeInfo.chooseIdentity())
         payHandle.returnValue.getOrThrow()
     }
 }

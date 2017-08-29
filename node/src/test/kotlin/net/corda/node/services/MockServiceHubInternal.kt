@@ -63,8 +63,6 @@ open class MockServiceHubInternal(
         get() = scheduler ?: throw UnsupportedOperationException()
     override val clock: Clock
         get() = overrideClock ?: throw UnsupportedOperationException()
-    override val legalIdentity: PartyAndCertificate
-        get() = throw UnsupportedOperationException()
     override val myInfo: NodeInfo
         get() = NodeInfo(listOf(MOCK_HOST_AND_PORT), listOf(DUMMY_IDENTITY_1), 1) // Required to get a dummy platformVersion when required for tests.
     override val monitoringService: MonitoringService = MonitoringService(MetricRegistry())

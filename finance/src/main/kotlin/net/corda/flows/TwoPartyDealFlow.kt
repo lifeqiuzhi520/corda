@@ -51,7 +51,7 @@ object TwoPartyDealFlow {
         @Suspendable override fun call(): SignedTransaction {
             progressTracker.currentStep = SENDING_PROPOSAL
             // Make the first message we'll send to kick off the flow.
-            val hello = Handshake(payload, serviceHub.legalIdentityKey)
+            val hello = Handshake(payload, me.owningKey)
             // Wait for the FinalityFlow to finish on the other side and return the tx when it's available.
             send(otherParty, hello)
 
@@ -111,7 +111,7 @@ object TwoPartyDealFlow {
             logger.trace { "Got signatures from other party, verifying ... " }
 
             progressTracker.currentStep = RECORDING
-            val ftx = subFlow(FinalityFlow(stx, setOf(otherParty, serviceHub.legalIdentity.party))).single()
+            val ftx = subFlow(FinalityFlow(stx, setOf(otherParty, me.party))).single()
 
             logger.trace { "Recorded transaction." }
 
@@ -185,7 +185,7 @@ object TwoPartyDealFlow {
             // We set the transaction's time-window: it may be that none of the contracts need this!
             // But it can't hurt to have one.
             ptx.setTimeWindow(serviceHub.clock.instant(), 30.seconds)
-            return Triple(ptx, arrayListOf(deal.participants.single { it == serviceHub.legalIdentity.party as AbstractParty }.owningKey), emptyList())
+            return Triple(ptx, arrayListOf(deal.participants.single { it == me.party as AbstractParty }.owningKey), emptyList())
         }
     }
 }
