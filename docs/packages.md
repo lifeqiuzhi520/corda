@@ -51,6 +51,10 @@ Data classes which model different forms of identity (potentially with supportin
 
 Internal, do not use. These APIs and implementations which are currently being revised and are subject to future change.
 
+# Package net.corda.core.messaging
+
+Data types used for Corda messaging between nodes. Of limited interest except to Corda core developers.
+
 # Package net.corda.core.node.services
 
 Services which run within a Corda node and provide various pieces of functionality such as identity management, transaction storage, etc.
@@ -58,6 +62,16 @@ Services which run within a Corda node and provide various pieces of functionali
 # Package net.corda.core.node.services.vault
 
 Supporting data types for the vault services.
+
+# Package net.corda.core.schemas
+
+Data types for storing data in a format that can be readily persisted/loaded via Hibernate. These types may be useful for developers integrating Corda with external
+systems, who need to work on Corda data within a database.
+
+# Package net.corda.core.serialization
+
+Data types and annotations for use in serializing objects (primarily via Kryo). [CordaSerializable] and [SerializeAsToken] are of note to developers implementing data types which need to be
+serialized, however most of this is used by Corda as part of serialization/deserialization and of limited use outside of Corda core.
 
 # Package net.corda.core.transactions
 
@@ -72,14 +86,30 @@ actual states rather than state references).
 
 A collection of utilities for summing financial states, for example, summing obligations to get total debts.
 
-# Package net.corda.node.internal
-
-Internal, do not use. These APIs and implementations which are currently being revised and are subject to future change.
-
-# Package net.corda.node.services
-
-Implementations of services used by Corda nodes.
-
 # Package net.corda.node.services.api
 
 Non-core node service APIs; typically these are not used outside of the node itself.
+
+# Package net.corda.nodeapi.internal
+
+Internal, do not use. These APIs and implementations which are currently being revised and are subject to future change.
+
+# Package net.corda.nodeapi.internal.serialization
+
+Internal, do not use. These APIs and implementations which are currently being revised and are subject to future change.
+
+# Package net.corda.nodeapi.internal.serialization.amqp
+
+Internal, do not use. These APIs and implementations which are currently being revised and are subject to future change.
+
+# Package net.corda.nodeapi.internal.serialization.amqp.custom
+
+Internal, do not use. These APIs and implementations which are currently being revised and are subject to future change.
+
+# Package net.corda.nodeapi.internal.serialization.carpenter
+
+Internal, do not use. These APIs and implementations which are currently being revised and are subject to future change.
+
+
+
+
