@@ -6,7 +6,7 @@ import net.corda.core.contracts.Issued
 import net.corda.core.contracts.StateAndRef
 import net.corda.core.contracts.withoutIssuer
 import net.corda.core.crypto.SecureHash
-import net.corda.core.crypto.TransactionSignature
+import net.corda.core.crypto.types.TransactionSignature
 import net.corda.core.flows.*
 import net.corda.core.identity.AbstractParty
 import net.corda.core.identity.Party

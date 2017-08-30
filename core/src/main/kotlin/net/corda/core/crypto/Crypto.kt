@@ -1,5 +1,6 @@
 package net.corda.core.crypto
 
+import net.corda.core.crypto.types.*
 import net.corda.core.serialization.serialize
 import net.i2p.crypto.eddsa.EdDSAEngine
 import net.i2p.crypto.eddsa.EdDSAPrivateKey

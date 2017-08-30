@@ -3,6 +3,10 @@ package net.corda.irs.api
 import co.paralleluniverse.fibers.Suspendable
 import net.corda.core.contracts.Command
 import net.corda.core.crypto.*
+import net.corda.core.crypto.types.MerkleTreeException
+import net.corda.core.crypto.types.SignableData
+import net.corda.core.crypto.types.SignatureMetadata
+import net.corda.core.crypto.types.TransactionSignature
 import net.corda.core.flows.FlowException
 import net.corda.core.flows.FlowLogic
 import net.corda.core.flows.InitiatedBy

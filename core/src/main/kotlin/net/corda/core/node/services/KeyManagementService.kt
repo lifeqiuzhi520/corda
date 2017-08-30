@@ -1,9 +1,9 @@
 package net.corda.core.node.services
 
 import co.paralleluniverse.fibers.Suspendable
-import net.corda.core.crypto.DigitalSignature
-import net.corda.core.crypto.SignableData
-import net.corda.core.crypto.TransactionSignature
+import net.corda.core.crypto.types.DigitalSignature
+import net.corda.core.crypto.types.SignableData
+import net.corda.core.crypto.types.TransactionSignature
 import net.corda.core.identity.PartyAndCertificate
 import java.security.PublicKey
 

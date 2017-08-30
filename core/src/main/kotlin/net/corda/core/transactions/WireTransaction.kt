@@ -1,9 +1,9 @@
 package net.corda.core.transactions
 
 import net.corda.core.contracts.*
-import net.corda.core.crypto.MerkleTree
+import net.corda.core.crypto.types.MerkleTree
 import net.corda.core.crypto.SecureHash
-import net.corda.core.crypto.TransactionSignature
+import net.corda.core.crypto.types.TransactionSignature
 import net.corda.core.crypto.keys
 import net.corda.core.identity.Party
 import net.corda.core.internal.Emoji

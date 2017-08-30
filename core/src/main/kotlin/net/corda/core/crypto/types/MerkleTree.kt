@@ -1,5 +1,6 @@
-package net.corda.core.crypto
+package net.corda.core.crypto.types
 
+import net.corda.core.crypto.SecureHash
 import java.util.*
 
 /**

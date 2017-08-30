@@ -1,5 +1,7 @@
 package net.corda.core.crypto
 
+import net.corda.core.crypto.types.CompositeKey
+import net.corda.core.crypto.types.CompositeSignature
 import org.bouncycastle.asn1.ASN1ObjectIdentifier
 import java.security.AccessController
 import java.security.PrivilegedAction
@@ -16,7 +18,7 @@ class CordaSecurityProvider : Provider(PROVIDER_NAME, 0.1, "${PROVIDER_NAME} sec
 
     private fun setup() {
         put("KeyFactory.${CompositeKey.KEY_ALGORITHM}", "net.corda.core.crypto.CompositeKeyFactory")
-        put("Signature.${CompositeSignature.SIGNATURE_ALGORITHM}", "net.corda.core.crypto.CompositeSignature")
+        put("Signature.${CompositeSignature.SIGNATURE_ALGORITHM}", "net.corda.core.crypto.types.CompositeSignature")
 
         val compositeKeyOID = CordaObjectIdentifier.COMPOSITE_KEY.id
         put("Alg.Alias.KeyFactory.$compositeKeyOID", CompositeKey.KEY_ALGORITHM)

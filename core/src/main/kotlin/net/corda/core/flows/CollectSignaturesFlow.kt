@@ -1,7 +1,7 @@
 package net.corda.core.flows
 
 import co.paralleluniverse.fibers.Suspendable
-import net.corda.core.crypto.TransactionSignature
+import net.corda.core.crypto.types.TransactionSignature
 import net.corda.core.crypto.isFulfilledBy
 import net.corda.core.crypto.toBase58String
 import net.corda.core.identity.AnonymousParty

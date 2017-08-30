@@ -1,6 +1,9 @@
 package net.corda.node.services.keys
 
 import net.corda.core.crypto.*
+import net.corda.core.crypto.types.DigitalSignature
+import net.corda.core.crypto.types.SignableData
+import net.corda.core.crypto.types.TransactionSignature
 import net.corda.core.identity.PartyAndCertificate
 import net.corda.core.internal.ThreadBox
 import net.corda.core.node.services.IdentityService

@@ -1,5 +1,7 @@
 package net.corda.core.crypto
 
+import net.corda.core.crypto.types.SignatureMetadata
+import net.corda.core.crypto.types.TransactionSignature
 import net.corda.core.identity.AnonymousParty
 import net.corda.core.serialization.CordaSerializable
 import java.security.PublicKey

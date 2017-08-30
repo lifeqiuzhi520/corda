@@ -2,7 +2,7 @@ package net.corda.docs
 
 import co.paralleluniverse.fibers.Suspendable
 import net.corda.core.contracts.*
-import net.corda.core.crypto.TransactionSignature
+import net.corda.core.crypto.types.TransactionSignature
 import net.corda.core.crypto.containsAny
 import net.corda.core.flows.FinalityFlow
 import net.corda.core.flows.FlowLogic

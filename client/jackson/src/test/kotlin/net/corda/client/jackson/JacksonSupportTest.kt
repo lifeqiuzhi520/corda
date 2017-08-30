@@ -4,8 +4,8 @@ import com.fasterxml.jackson.databind.SerializationFeature
 import net.corda.core.contracts.Amount
 import net.corda.finance.USD
 import net.corda.core.crypto.Crypto
-import net.corda.core.crypto.SignatureMetadata
-import net.corda.core.crypto.TransactionSignature
+import net.corda.core.crypto.types.SignatureMetadata
+import net.corda.core.crypto.types.TransactionSignature
 import net.corda.core.crypto.generateKeyPair
 import net.corda.core.transactions.SignedTransaction
 import net.corda.testing.ALICE_PUBKEY

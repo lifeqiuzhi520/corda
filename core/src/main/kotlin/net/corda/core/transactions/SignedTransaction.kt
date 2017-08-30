@@ -2,6 +2,9 @@ package net.corda.core.transactions
 
 import net.corda.core.contracts.*
 import net.corda.core.crypto.*
+import net.corda.core.crypto.types.SignableData
+import net.corda.core.crypto.types.SignatureMetadata
+import net.corda.core.crypto.types.TransactionSignature
 import net.corda.core.identity.Party
 import net.corda.core.internal.VisibleForTesting
 import net.corda.core.node.ServiceHub

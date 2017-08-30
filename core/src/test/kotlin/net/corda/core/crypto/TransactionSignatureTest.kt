@@ -1,5 +1,8 @@
 package net.corda.core.crypto
 
+import net.corda.core.crypto.types.SignableData
+import net.corda.core.crypto.types.SignatureMetadata
+import net.corda.core.crypto.types.TransactionSignature
 import net.corda.testing.TestDependencyInjectionBase
 import org.junit.Test
 import java.security.SignatureException

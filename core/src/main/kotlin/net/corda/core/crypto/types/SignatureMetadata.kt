@@ -1,4 +1,4 @@
-package net.corda.core.crypto
+package net.corda.core.crypto.types
 
 import net.corda.core.serialization.CordaSerializable
 

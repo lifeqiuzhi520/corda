@@ -3,6 +3,9 @@ package net.corda.core.crypto
 
 import net.corda.core.contracts.*
 import net.corda.core.crypto.SecureHash.Companion.zeroHash
+import net.corda.core.crypto.types.MerkleTree
+import net.corda.core.crypto.types.MerkleTreeException
+import net.corda.core.crypto.types.PartialMerkleTree
 import net.corda.core.identity.Party
 import net.corda.core.serialization.deserialize
 import net.corda.core.serialization.serialize

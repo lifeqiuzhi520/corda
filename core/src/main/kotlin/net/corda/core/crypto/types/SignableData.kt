@@ -1,5 +1,6 @@
-package net.corda.core.crypto
+package net.corda.core.crypto.types
 
+import net.corda.core.crypto.SecureHash
 import net.corda.core.serialization.CordaSerializable
 
 /**
@@ -11,4 +12,3 @@ import net.corda.core.serialization.CordaSerializable
  */
 @CordaSerializable
 data class SignableData(val txId: SecureHash, val signatureMetadata: SignatureMetadata)
-

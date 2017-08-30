@@ -1,11 +1,9 @@
-package net.corda.core.crypto
+package net.corda.core.crypto.types
 
+import net.corda.core.crypto.SecureHash
 import net.corda.core.crypto.SecureHash.Companion.zeroHash
 import net.corda.core.serialization.CordaSerializable
 import java.util.*
-
-@CordaSerializable
-class MerkleTreeException(val reason: String) : Exception("Partial Merkle Tree exception. Reason: $reason")
 
 /**
  * Building and verification of Partial Merkle Tree.

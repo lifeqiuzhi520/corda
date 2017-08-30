@@ -2,6 +2,10 @@
 
 package net.corda.core.crypto
 
+import net.corda.core.crypto.types.CompositeKey
+import net.corda.core.crypto.types.DigitalSignature
+import net.corda.core.crypto.types.SignableData
+import net.corda.core.crypto.types.TransactionSignature
 import net.corda.core.utilities.OpaqueBytes
 import java.math.BigInteger
 import java.security.*

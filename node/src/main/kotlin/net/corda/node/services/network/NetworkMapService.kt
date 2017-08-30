@@ -1,7 +1,7 @@
 package net.corda.node.services.network
 
-import net.corda.core.crypto.DigitalSignature
-import net.corda.core.crypto.SignedData
+import net.corda.core.crypto.types.DigitalSignature
+import net.corda.core.crypto.types.SignedData
 import net.corda.core.crypto.isFulfilledBy
 import net.corda.core.crypto.random63BitValue
 import net.corda.core.identity.PartyAndCertificate
@@ -22,7 +22,6 @@ import net.corda.core.utilities.loggerFor
 import net.corda.node.services.api.AbstractNodeService
 import net.corda.node.services.api.ServiceHubInternal
 import net.corda.node.services.messaging.MessageHandlerRegistration
-import net.corda.node.services.messaging.MessagingService
 import net.corda.node.services.messaging.ServiceRequestMessage
 import net.corda.node.services.messaging.createMessage
 import net.corda.node.services.network.NetworkMapService.*

@@ -2,6 +2,9 @@ package net.corda.testing.node
 
 import net.corda.core.contracts.Attachment
 import net.corda.core.crypto.*
+import net.corda.core.crypto.types.DigitalSignature
+import net.corda.core.crypto.types.SignableData
+import net.corda.core.crypto.types.TransactionSignature
 import net.corda.core.flows.StateMachineRunId
 import net.corda.core.identity.PartyAndCertificate
 import net.corda.core.messaging.DataFeed

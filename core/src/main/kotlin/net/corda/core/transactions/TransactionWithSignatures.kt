@@ -1,7 +1,7 @@
 package net.corda.core.transactions
 
 import net.corda.core.contracts.NamedByHash
-import net.corda.core.crypto.TransactionSignature
+import net.corda.core.crypto.types.TransactionSignature
 import net.corda.core.crypto.isFulfilledBy
 import net.corda.core.transactions.SignedTransaction.SignaturesMissingException
 import net.corda.core.utilities.toNonEmptySet

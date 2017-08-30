@@ -1,5 +1,6 @@
 package net.corda.core.crypto
 
+import net.corda.core.crypto.types.SignedData
 import net.corda.core.serialization.SerializedBytes
 import net.corda.core.serialization.serialize
 import net.corda.testing.TestDependencyInjectionBase

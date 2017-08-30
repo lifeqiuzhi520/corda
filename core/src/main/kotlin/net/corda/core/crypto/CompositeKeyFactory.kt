@@ -1,5 +1,6 @@
 package net.corda.core.crypto
 
+import net.corda.core.crypto.types.CompositeKey
 import java.security.*
 import java.security.spec.InvalidKeySpecException
 import java.security.spec.KeySpec

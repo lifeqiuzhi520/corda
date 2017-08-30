@@ -4,7 +4,7 @@ import net.corda.core.contracts.Command
 import net.corda.core.contracts.ContractState
 import net.corda.core.contracts.TransactionState
 import net.corda.core.contracts.`with notary`
-import net.corda.core.crypto.MerkleTreeException
+import net.corda.core.crypto.types.MerkleTreeException
 import net.corda.core.crypto.generateKeyPair
 import net.corda.core.identity.Party
 import net.corda.core.node.services.ServiceInfo

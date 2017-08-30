@@ -4,7 +4,7 @@ package net.corda.testing.contracts
 
 import net.corda.core.contracts.*
 import net.corda.core.crypto.Crypto
-import net.corda.core.crypto.SignatureMetadata
+import net.corda.core.crypto.types.SignatureMetadata
 import net.corda.core.identity.AbstractParty
 import net.corda.core.identity.AnonymousParty
 import net.corda.core.identity.Party

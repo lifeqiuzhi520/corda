@@ -3,6 +3,7 @@ package net.corda.core.node.services
 import net.corda.core.contracts.StateRef
 import net.corda.core.contracts.TimeWindow
 import net.corda.core.crypto.*
+import net.corda.core.crypto.types.*
 import net.corda.core.flows.FlowLogic
 import net.corda.core.flows.NotaryError
 import net.corda.core.flows.NotaryException
