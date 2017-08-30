@@ -41,7 +41,22 @@ class EnumTests {
         assertEquals("c", schema_c.fields.first().name)
         assertEquals(brasTestName, schema_c.fields.first().type)
 
+        assertEquals(8, schema_bras.choices.size)
+        Bras.values().forEach {
+            val bra = it
+            assertNotNull (schema_bras.choices.find { it.name == bra.name })
+        }
+    }
 
+    @Test
+    fun deserialiseSimpleTest() {
+        data class C(val c: Bras)
+
+        val objAndEnvelope = DeserializationInput(sf1).deserializeAndReturnEnvelope(
+                TestSerializationOutput(VERBOSE, sf1).serialize(C(Bras.UNDERWIRE)))
+
+        val obj = objAndEnvelope.obj
+        val envelope = objAndEnvelope.envelope
     }
 
 

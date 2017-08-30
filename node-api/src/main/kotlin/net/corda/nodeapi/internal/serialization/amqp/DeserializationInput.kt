@@ -21,12 +21,12 @@ data class ObjectAndEnvelope<out T>(val obj: T, val envelope: Envelope)
  * @param serializerFactory This is the factory for [AMQPSerializer] instances and can be shared across multiple
  * instances and threads.
  */
-class DeserializationInput(internal val serializerFactory: SerializerFactory) {
+class DeserializationInput(private val serializerFactory: SerializerFactory) {
     // TODO: we're not supporting object refs yet
     private val objectHistory: MutableList<Any> = ArrayList()
 
     internal companion object {
-        val BYTES_NEEDED_TO_PEEK: Int = 23
+        private val BYTES_NEEDED_TO_PEEK: Int = 23
 
         fun peekSize(bytes: ByteArray): Int {
             // There's an 8 byte header, and then a 0 byte plus descriptor followed by constructor
@@ -58,7 +58,6 @@ class DeserializationInput(internal val serializerFactory: SerializerFactory) {
     inline fun <reified T : Any> deserializeAndReturnEnvelope(bytes: SerializedBytes<T>): ObjectAndEnvelope<T> =
             deserializeAndReturnEnvelope(bytes, T::class.java)
 
-
     @Throws(NotSerializableException::class)
     private fun getEnvelope(bytes: ByteSequence): Envelope {
         // Check that the lead bytes match expected header
@@ -80,9 +79,9 @@ class DeserializationInput(internal val serializerFactory: SerializerFactory) {
     private fun <R> des(generator: () -> R): R {
         try {
             return generator()
-        } catch(nse: NotSerializableException) {
+        } catch (nse: NotSerializableException) {
             throw nse
-        } catch(t: Throwable) {
+        } catch (t: Throwable) {
             throw NotSerializableException("Unexpected throwable: ${t.message} ${t.getStackTraceAsString()}")
         } finally {
             objectHistory.clear()
@@ -95,39 +94,33 @@ class DeserializationInput(internal val serializerFactory: SerializerFactory) {
      * be deserialized and a schema describing the types of the objects.
      */
     @Throws(NotSerializableException::class)
-    fun <T : Any> deserialize(bytes: ByteSequence, clazz: Class<T>): T {
-        return des {
-            val envelope = getEnvelope(bytes)
-            clazz.cast(readObjectOrNull(envelope.obj, envelope.schema, clazz))
-        }
+    fun <T : Any> deserialize(bytes: ByteSequence, clazz: Class<T>): T = des {
+        val envelope = getEnvelope(bytes)
+        clazz.cast(readObjectOrNull(envelope.obj, envelope.schema, clazz))
     }
 
     @Throws(NotSerializableException::class)
-    fun <T : Any> deserializeAndReturnEnvelope(bytes: SerializedBytes<T>, clazz: Class<T>): ObjectAndEnvelope<T> {
-        return des {
-            val envelope = getEnvelope(bytes)
-            // Now pick out the obj and schema from the envelope.
-            ObjectAndEnvelope(clazz.cast(readObjectOrNull(envelope.obj, envelope.schema, clazz)), envelope)
-        }
+    fun <T : Any> deserializeAndReturnEnvelope(bytes: SerializedBytes<T>, clazz: Class<T>): ObjectAndEnvelope<T> = des {
+        val envelope = getEnvelope(bytes)
+        // Now pick out the obj and schema from the envelope.
+        ObjectAndEnvelope(clazz.cast(readObjectOrNull(envelope.obj, envelope.schema, clazz)), envelope)
     }
 
     internal fun readObjectOrNull(obj: Any?, schema: Schema, type: Type): Any? {
         return if (obj == null) null else readObject(obj, schema, type)
     }
 
-    internal fun readObject(obj: Any, schema: Schema, type: Type): Any {
-        if (obj is DescribedType) {
+    internal fun readObject(obj: Any, schema: Schema, type: Type) = when (obj) {
+        is DescribedType -> {
             // Look up serializer in factory by descriptor
             val serializer = serializerFactory.get(obj.descriptor, schema)
             if (serializer.type != type && with(serializer.type) { !isSubClassOf(type) && !materiallyEquivalentTo(type) })
                 throw NotSerializableException("Described type with descriptor ${obj.descriptor} was " +
                         "expected to be of type $type but was ${serializer.type}")
-            return serializer.readObject(obj.described, schema, this)
-        } else if (obj is Binary) {
-            return obj.array
-        } else {
-            return obj
+            serializer.readObject(obj.described, schema, this)
         }
+        is Binary -> obj.array
+        else -> obj
     }
 
     /**
@@ -136,5 +129,5 @@ class DeserializationInput(internal val serializerFactory: SerializerFactory) {
      * In the future tighter control might be needed
      */
     private fun Type.materiallyEquivalentTo(that: Type): Boolean =
-        asClass() == that.asClass() && that is ParameterizedType
+            asClass() == that.asClass() && that is ParameterizedType
 }

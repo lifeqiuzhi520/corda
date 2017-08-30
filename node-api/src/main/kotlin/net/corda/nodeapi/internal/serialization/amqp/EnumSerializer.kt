@@ -23,6 +23,8 @@ class EnumSerializer(declaredType: Type, declaredClass: Class<*>,factory: Serial
         output.writeTypeNotations(typeNotation)
     }
     override fun readObject(obj: Any, schema: Schema, input: DeserializationInput): Any {
+        input.readObjectOrNull(obj as L, schema, declaredType.actualTypeArguments[0])
+
         throw NotImplementedError()
     }
 
