@@ -113,7 +113,7 @@ class P2PMessagingTest : NodeBasedTest() {
             send(msg, serviceAddress, retryId = request.sessionID)
             responseFuture
         }
-        crashingNodes.firstRequestReceived.await()
+        crashingNodes.firstRequestReceived.await(5, TimeUnit.SECONDS)
         // The request wasn't successful.
         assertThat(responseFuture.isDone).isFalse()
         crashingNodes.ignoreRequests = false
@@ -147,7 +147,7 @@ class P2PMessagingTest : NodeBasedTest() {
 
         // Wait until the first request is received
         crashingNodes.firstRequestReceived.await(5, TimeUnit.SECONDS)
-        // Stop alice's node before the request is redelivered – the first request is ignored
+        // Stop alice's node after we ensured that the first request was delivered and ignored.
         alice.stop()
         val numberOfRequestsReceived = crashingNodes.requestsReceived.get()
         assertThat(numberOfRequestsReceived).isGreaterThanOrEqualTo(1)
@@ -158,7 +158,7 @@ class P2PMessagingTest : NodeBasedTest() {
         val aliceRestarted = startNode(ALICE.name, configOverrides = mapOf("messageRedeliveryDelaySeconds" to 1)).getOrThrow()
         val response = aliceRestarted.network.onNext<Any>(dummyTopic, sessionId).getOrThrow(5.seconds)
 
-        assertThat(crashingNodes.requestsReceived.get()).isGreaterThanOrEqualTo(numberOfRequestsReceived + 1)
+        assertThat(crashingNodes.requestsReceived.get()).isGreaterThan(numberOfRequestsReceived)
         assertThat(response).isEqualTo(responseMessage)
     }
 
