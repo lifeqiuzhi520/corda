@@ -15,7 +15,7 @@ dependencies {
     // and CorDapps using :finance features should use 'cordapp' not 'compile' linkage.
     cordaCompile project(':core')
 
-    compile "com.google.guava:guava:$guava_version"
+    cordaCompile "com.google.guava:guava:$guava_version"
 
     testCompile project(':test-utils')
     testCompile project(path: ':core', configuration: 'testArtifacts')
