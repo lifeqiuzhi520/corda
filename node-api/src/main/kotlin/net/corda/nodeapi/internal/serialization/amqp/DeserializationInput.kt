@@ -55,7 +55,7 @@ class DeserializationInput(internal val serializerFactory: SerializerFactory) {
 
 
     @Throws(NotSerializableException::class)
-    inline internal fun <reified T : Any> deserializeAndReturnEnvelope(bytes: SerializedBytes<T>): ObjectAndEnvelope<T> =
+    inline fun <reified T : Any> deserializeAndReturnEnvelope(bytes: SerializedBytes<T>): ObjectAndEnvelope<T> =
             deserializeAndReturnEnvelope(bytes, T::class.java)
 
 
@@ -103,7 +103,7 @@ class DeserializationInput(internal val serializerFactory: SerializerFactory) {
     }
 
     @Throws(NotSerializableException::class)
-    internal fun <T : Any> deserializeAndReturnEnvelope(bytes: SerializedBytes<T>, clazz: Class<T>): ObjectAndEnvelope<T> {
+    fun <T : Any> deserializeAndReturnEnvelope(bytes: SerializedBytes<T>, clazz: Class<T>): ObjectAndEnvelope<T> {
         return des {
             val envelope = getEnvelope(bytes)
             // Now pick out the obj and schema from the envelope.
