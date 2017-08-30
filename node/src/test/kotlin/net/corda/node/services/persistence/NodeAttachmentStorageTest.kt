@@ -4,7 +4,7 @@ import com.codahale.metrics.MetricRegistry
 import com.google.common.jimfs.Configuration
 import com.google.common.jimfs.Jimfs
 import net.corda.core.crypto.SecureHash
-import net.corda.core.crypto.sha256
+import net.corda.core.crypto.types.sha256
 import net.corda.core.internal.read
 import net.corda.core.internal.readAll
 import net.corda.core.internal.write

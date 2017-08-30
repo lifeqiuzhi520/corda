@@ -1,8 +1,12 @@
 package net.corda.testing.node
 
 import net.corda.core.contracts.Attachment
-import net.corda.core.crypto.*
+import net.corda.core.crypto.generateKeyPair
+import net.corda.core.crypto.keys
+import net.corda.core.crypto.sha256
+import net.corda.core.crypto.sign
 import net.corda.core.crypto.types.DigitalSignature
+import net.corda.core.crypto.types.SecureHash
 import net.corda.core.crypto.types.SignableData
 import net.corda.core.crypto.types.TransactionSignature
 import net.corda.core.flows.StateMachineRunId

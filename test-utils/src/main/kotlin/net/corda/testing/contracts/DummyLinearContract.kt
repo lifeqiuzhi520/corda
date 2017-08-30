@@ -4,8 +4,8 @@ import net.corda.core.contracts.Contract
 import net.corda.core.contracts.LinearState
 import net.corda.core.contracts.UniqueIdentifier
 import net.corda.core.contracts.requireThat
-import net.corda.core.crypto.SecureHash
 import net.corda.core.crypto.containsAny
+import net.corda.core.crypto.types.SecureHash
 import net.corda.core.identity.AbstractParty
 import net.corda.core.schemas.MappedSchema
 import net.corda.core.schemas.PersistentState

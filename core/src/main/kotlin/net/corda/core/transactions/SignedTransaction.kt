@@ -1,7 +1,8 @@
 package net.corda.core.transactions
 
 import net.corda.core.contracts.*
-import net.corda.core.crypto.*
+import net.corda.core.crypto.sign
+import net.corda.core.crypto.types.SecureHash
 import net.corda.core.crypto.types.SignableData
 import net.corda.core.crypto.types.SignatureMetadata
 import net.corda.core.crypto.types.TransactionSignature

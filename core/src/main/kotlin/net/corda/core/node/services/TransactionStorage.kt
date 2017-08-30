@@ -1,6 +1,6 @@
 package net.corda.core.node.services
 
-import net.corda.core.crypto.SecureHash
+import net.corda.core.crypto.types.SecureHash
 import net.corda.core.messaging.DataFeed
 import net.corda.core.transactions.SignedTransaction
 import rx.Observable

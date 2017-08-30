@@ -3,7 +3,7 @@ package net.corda.kotlin.rpc
 import com.google.common.hash.Hashing
 import com.google.common.hash.HashingInputStream
 import net.corda.client.rpc.CordaRPCConnection
-import net.corda.core.crypto.SecureHash
+import net.corda.core.crypto.types.SecureHash
 import net.corda.core.internal.*
 import net.corda.core.messaging.*
 import net.corda.core.node.NodeInfo

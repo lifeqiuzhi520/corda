@@ -1,6 +1,6 @@
 package net.corda.core.contracts
 
-import net.corda.core.crypto.SecureHash
+import net.corda.core.crypto.types.SecureHash
 import net.corda.core.node.services.TransactionStorage
 import net.corda.core.transactions.SignedTransaction
 import net.corda.core.transactions.WireTransaction

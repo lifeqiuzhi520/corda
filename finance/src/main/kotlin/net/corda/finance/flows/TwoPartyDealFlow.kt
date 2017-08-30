@@ -2,7 +2,7 @@ package net.corda.finance.flows
 
 import co.paralleluniverse.fibers.Suspendable
 import net.corda.core.contracts.requireThat
-import net.corda.core.crypto.SecureHash
+import net.corda.core.crypto.types.SecureHash
 import net.corda.core.crypto.types.TransactionSignature
 import net.corda.core.flows.*
 import net.corda.core.identity.AbstractParty

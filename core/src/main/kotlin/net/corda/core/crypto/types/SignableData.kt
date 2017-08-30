@@ -1,6 +1,5 @@
 package net.corda.core.crypto.types
 
-import net.corda.core.crypto.SecureHash
 import net.corda.core.serialization.CordaSerializable
 
 /**

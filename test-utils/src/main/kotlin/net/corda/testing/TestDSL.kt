@@ -1,12 +1,12 @@
 package net.corda.testing
 
 import net.corda.core.contracts.*
-import net.corda.core.crypto.*
+import net.corda.core.crypto.Crypto
 import net.corda.core.crypto.NullKeys.NULL_SIGNATURE
-import net.corda.core.crypto.types.CompositeKey
-import net.corda.core.crypto.types.SignableData
-import net.corda.core.crypto.types.SignatureMetadata
-import net.corda.core.crypto.types.TransactionSignature
+import net.corda.core.crypto.keys
+import net.corda.core.crypto.sign
+import net.corda.core.crypto.toStringShort
+import net.corda.core.crypto.types.*
 import net.corda.core.identity.Party
 import net.corda.core.node.ServiceHub
 import net.corda.core.transactions.SignedTransaction

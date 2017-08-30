@@ -3,10 +3,10 @@ package net.corda.core.flows
 import co.paralleluniverse.fibers.Suspendable
 import net.corda.core.contracts.StateRef
 import net.corda.core.contracts.TimeWindow
-import net.corda.core.crypto.SecureHash
+import net.corda.core.crypto.keys
+import net.corda.core.crypto.types.SecureHash
 import net.corda.core.crypto.types.SignedData
 import net.corda.core.crypto.types.TransactionSignature
-import net.corda.core.crypto.keys
 import net.corda.core.identity.Party
 import net.corda.core.internal.FetchDataFlow
 import net.corda.core.node.services.NotaryService

@@ -1,6 +1,6 @@
 package net.corda.node.services.statemachine
 
-import net.corda.core.crypto.SecureHash
+import net.corda.core.crypto.types.SecureHash
 
 interface FlowIORequest {
     // This is used to identify where we suspended, in case of message mismatch errors and other things where we

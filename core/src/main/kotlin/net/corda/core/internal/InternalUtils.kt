@@ -1,7 +1,7 @@
 package net.corda.core.internal
 
-import net.corda.core.crypto.SecureHash
 import net.corda.core.crypto.sha256
+import net.corda.core.crypto.types.SecureHash
 import org.bouncycastle.cert.X509CertificateHolder
 import org.slf4j.Logger
 import rx.Observable

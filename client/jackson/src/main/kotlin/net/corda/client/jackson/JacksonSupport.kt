@@ -14,6 +14,7 @@ import net.corda.core.contracts.StateRef
 import net.corda.core.crypto.*
 import net.corda.core.crypto.types.CompositeKey
 import net.corda.core.crypto.types.MerkleTree
+import net.corda.core.crypto.types.SecureHash
 import net.corda.core.crypto.types.TransactionSignature
 import net.corda.core.identity.AbstractParty
 import net.corda.core.identity.AnonymousParty

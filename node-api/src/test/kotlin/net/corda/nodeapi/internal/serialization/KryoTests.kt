@@ -6,7 +6,11 @@ import com.esotericsoftware.kryo.io.Input
 import com.esotericsoftware.kryo.io.Output
 import com.google.common.primitives.Ints
 import net.corda.core.contracts.PrivacySalt
-import net.corda.core.crypto.*
+import net.corda.core.crypto.Crypto
+import net.corda.core.crypto.generateKeyPair
+import net.corda.core.crypto.sha256
+import net.corda.core.crypto.sign
+import net.corda.core.crypto.types.SecureHash
 import net.corda.core.crypto.types.SignableData
 import net.corda.core.crypto.types.SignatureMetadata
 import net.corda.core.internal.FetchDataFlow

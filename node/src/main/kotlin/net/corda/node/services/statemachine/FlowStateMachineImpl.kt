@@ -1,12 +1,13 @@
 package net.corda.node.services.statemachine
 
 import co.paralleluniverse.fibers.Fiber
+import co.paralleluniverse.fibers.Fiber.parkAndSerialize
 import co.paralleluniverse.fibers.FiberScheduler
 import co.paralleluniverse.fibers.Suspendable
 import co.paralleluniverse.strands.Strand
 import net.corda.core.concurrent.CordaFuture
-import net.corda.core.crypto.SecureHash
 import net.corda.core.crypto.random63BitValue
+import net.corda.core.crypto.types.SecureHash
 import net.corda.core.flows.*
 import net.corda.core.identity.Party
 import net.corda.core.internal.FlowStateMachine

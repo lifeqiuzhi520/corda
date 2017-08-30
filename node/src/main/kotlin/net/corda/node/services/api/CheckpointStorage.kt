@@ -1,6 +1,6 @@
 package net.corda.node.services.api
 
-import net.corda.core.crypto.SecureHash
+import net.corda.core.crypto.types.SecureHash
 import net.corda.core.serialization.SerializedBytes
 import net.corda.node.services.statemachine.FlowStateMachineImpl
 

@@ -1,14 +1,14 @@
 package net.corda.node.services.persistence
 
 import com.codahale.metrics.MetricRegistry
-import net.corda.core.internal.VisibleForTesting
 import com.google.common.hash.HashCode
 import com.google.common.hash.Hashing
 import com.google.common.hash.HashingInputStream
 import com.google.common.io.CountingInputStream
 import net.corda.core.contracts.AbstractAttachment
 import net.corda.core.contracts.Attachment
-import net.corda.core.crypto.SecureHash
+import net.corda.core.crypto.types.SecureHash
+import net.corda.core.internal.VisibleForTesting
 import net.corda.core.node.services.AttachmentStorage
 import net.corda.core.serialization.*
 import net.corda.core.utilities.loggerFor

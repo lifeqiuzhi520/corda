@@ -3,7 +3,7 @@ package net.corda.core.node.services
 import co.paralleluniverse.fibers.Suspendable
 import net.corda.core.concurrent.CordaFuture
 import net.corda.core.contracts.*
-import net.corda.core.crypto.SecureHash
+import net.corda.core.crypto.types.SecureHash
 import net.corda.core.flows.FlowException
 import net.corda.core.identity.AbstractParty
 import net.corda.core.node.services.vault.QueryCriteria

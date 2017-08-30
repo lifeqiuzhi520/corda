@@ -1,7 +1,7 @@
 package net.corda.core.node.services
 
 import net.corda.core.contracts.Attachment
-import net.corda.core.crypto.SecureHash
+import net.corda.core.crypto.types.SecureHash
 import java.io.IOException
 import java.io.InputStream
 import java.nio.file.FileAlreadyExistsException

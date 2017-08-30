@@ -3,8 +3,8 @@ package net.corda.node.services.vault
 import co.paralleluniverse.fibers.Suspendable
 import co.paralleluniverse.strands.Strand
 import net.corda.core.contracts.*
-import net.corda.core.crypto.SecureHash
 import net.corda.core.crypto.containsAny
+import net.corda.core.crypto.types.SecureHash
 import net.corda.core.internal.ThreadBox
 import net.corda.core.internal.VisibleForTesting
 import net.corda.core.internal.tee
@@ -12,11 +12,9 @@ import net.corda.core.node.ServiceHub
 import net.corda.core.node.services.StatesNotAvailableException
 import net.corda.core.node.services.Vault
 import net.corda.core.node.services.VaultService
-import net.corda.core.node.services.vault.IQueryCriteriaParser
 import net.corda.core.node.services.vault.QueryCriteria
 import net.corda.core.node.services.vault.Sort
 import net.corda.core.node.services.vault.SortAttribute
-import net.corda.core.schemas.PersistentState
 import net.corda.core.schemas.PersistentStateRef
 import net.corda.core.serialization.SerializationDefaults.STORAGE_CONTEXT
 import net.corda.core.serialization.SingletonSerializeAsToken
@@ -35,7 +33,6 @@ import rx.subjects.PublishSubject
 import java.security.PublicKey
 import java.time.Instant
 import java.util.*
-import javax.persistence.criteria.Predicate
 
 /**
  * Currently, the node vault service is a very simple RDBMS backed implementation.  It will change significantly when

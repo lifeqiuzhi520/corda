@@ -4,7 +4,7 @@ import net.corda.client.mock.*
 import net.corda.core.contracts.*
 import net.corda.core.crypto.SecureHash
 import net.corda.core.crypto.entropyToKeyPair
-import net.corda.core.crypto.sha256
+import net.corda.core.crypto.types.sha256
 import net.corda.core.identity.AbstractParty
 import net.corda.core.identity.AnonymousParty
 import net.corda.core.identity.Party

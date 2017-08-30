@@ -2,8 +2,8 @@
 
 package net.corda.core.contracts
 
-import net.corda.core.crypto.SecureHash
 import net.corda.core.crypto.secureRandomBytes
+import net.corda.core.crypto.types.SecureHash
 import net.corda.core.flows.FlowLogicRef
 import net.corda.core.flows.FlowLogicRefFactory
 import net.corda.core.identity.AbstractParty

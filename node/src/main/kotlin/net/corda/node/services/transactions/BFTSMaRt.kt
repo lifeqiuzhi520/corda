@@ -14,11 +14,8 @@ import bftsmart.tom.server.defaultservices.DefaultReplier
 import bftsmart.tom.util.Extractor
 import net.corda.core.contracts.StateRef
 import net.corda.core.contracts.TimeWindow
-import net.corda.core.crypto.*
-import net.corda.core.crypto.types.DigitalSignature
-import net.corda.core.crypto.types.SignableData
-import net.corda.core.crypto.types.SignedData
-import net.corda.core.crypto.types.TransactionSignature
+import net.corda.core.crypto.sign
+import net.corda.core.crypto.types.*
 import net.corda.core.flows.NotaryError
 import net.corda.core.flows.NotaryException
 import net.corda.core.identity.Party

@@ -6,8 +6,8 @@ import net.corda.core.contracts.Amount
 import net.corda.core.contracts.StateAndRef
 import net.corda.core.contracts.StateRef
 import net.corda.core.contracts.TransactionState
-import net.corda.core.crypto.SecureHash
 import net.corda.core.crypto.toBase58String
+import net.corda.core.crypto.types.SecureHash
 import net.corda.core.identity.AbstractParty
 import net.corda.core.identity.Party
 import net.corda.core.node.ServiceHub

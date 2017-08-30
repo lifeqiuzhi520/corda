@@ -1,7 +1,7 @@
 package net.corda.core.node
 
 import net.corda.core.contracts.*
-import net.corda.core.crypto.SecureHash
+import net.corda.core.crypto.types.SecureHash
 import net.corda.core.identity.AbstractParty
 import net.corda.core.node.services.Vault
 import net.corda.core.transactions.LedgerTransaction

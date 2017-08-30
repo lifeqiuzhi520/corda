@@ -2,10 +2,7 @@
 
 package net.corda.core.crypto
 
-import net.corda.core.crypto.types.CompositeKey
-import net.corda.core.crypto.types.DigitalSignature
-import net.corda.core.crypto.types.SignableData
-import net.corda.core.crypto.types.TransactionSignature
+import net.corda.core.crypto.types.*
 import net.corda.core.utilities.OpaqueBytes
 import java.math.BigInteger
 import java.security.*
@@ -197,3 +194,6 @@ fun random63BitValue(): Long {
         }
     }
 }
+
+fun ByteArray.sha256(): SecureHash.SHA256 = SecureHash.sha256(this)
+fun OpaqueBytes.sha256(): SecureHash.SHA256 = SecureHash.sha256(this.bytes)

@@ -2,11 +2,14 @@ package net.corda.client.jfx.model
 
 import javafx.beans.value.ObservableValue
 import javafx.collections.ObservableMap
-import net.corda.client.jfx.utils.*
+import net.corda.client.jfx.utils.associateBy
+import net.corda.client.jfx.utils.getObservableValue
+import net.corda.client.jfx.utils.map
+import net.corda.client.jfx.utils.recordInSequence
 import net.corda.core.contracts.ContractState
 import net.corda.core.contracts.StateAndRef
 import net.corda.core.contracts.StateRef
-import net.corda.core.crypto.SecureHash
+import net.corda.core.crypto.types.SecureHash
 import net.corda.core.transactions.SignedTransaction
 import org.fxmisc.easybind.EasyBind
 

@@ -1,7 +1,7 @@
 package net.corda.core.serialization
 
-import net.corda.core.crypto.SecureHash
 import net.corda.core.crypto.sha256
+import net.corda.core.crypto.types.SecureHash
 import net.corda.core.internal.WriteOnceProperty
 import net.corda.core.serialization.SerializationDefaults.P2P_CONTEXT
 import net.corda.core.serialization.SerializationDefaults.SERIALIZATION_FACTORY

@@ -2,7 +2,7 @@ package net.corda.core.serialization
 
 import co.paralleluniverse.fibers.Suspendable
 import net.corda.core.contracts.Attachment
-import net.corda.core.crypto.SecureHash
+import net.corda.core.crypto.types.SecureHash
 import net.corda.core.flows.FlowLogic
 import net.corda.core.flows.InitiatingFlow
 import net.corda.core.flows.TestDataVendingFlow

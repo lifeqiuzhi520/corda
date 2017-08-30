@@ -1,5 +1,7 @@
-package net.corda.core.crypto
+package net.corda.core.crypto.types
 
+import net.corda.core.crypto.newSecureRandom
+import net.corda.core.crypto.sha256
 import net.corda.core.serialization.CordaSerializable
 import net.corda.core.utilities.OpaqueBytes
 import net.corda.core.utilities.parseAsHex
@@ -39,11 +41,9 @@ sealed class SecureHash(bytes: ByteArray) : OpaqueBytes(bytes) {
         @JvmStatic fun sha256(str: String) = sha256(str.toByteArray())
 
         @JvmStatic fun randomSHA256() = sha256(newSecureRandom().generateSeed(32))
-        val zeroHash = SecureHash.SHA256(ByteArray(32, { 0.toByte() }))
+        val zeroHash = SHA256(ByteArray(32, { 0.toByte() }))
     }
 
     // In future, maybe SHA3, truncated hashes etc.
 }
 
-fun ByteArray.sha256(): SecureHash.SHA256 = SecureHash.sha256(this)
-fun OpaqueBytes.sha256(): SecureHash.SHA256 = SecureHash.sha256(this.bytes)

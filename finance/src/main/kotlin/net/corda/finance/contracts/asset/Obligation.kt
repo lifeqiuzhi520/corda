@@ -1,12 +1,8 @@
 package net.corda.finance.contracts.asset
 
-import net.corda.finance.contracts.NetCommand
-import net.corda.finance.contracts.NetType
-import net.corda.finance.contracts.NettableState
-import net.corda.finance.contracts.asset.Obligation.Lifecycle.NORMAL
 import net.corda.core.contracts.*
-import net.corda.core.crypto.SecureHash
 import net.corda.core.crypto.entropyToKeyPair
+import net.corda.core.crypto.types.SecureHash
 import net.corda.core.identity.AbstractParty
 import net.corda.core.identity.AnonymousParty
 import net.corda.core.identity.Party
@@ -17,6 +13,10 @@ import net.corda.core.transactions.LedgerTransaction
 import net.corda.core.transactions.TransactionBuilder
 import net.corda.core.utilities.NonEmptySet
 import net.corda.core.utilities.seconds
+import net.corda.finance.contracts.NetCommand
+import net.corda.finance.contracts.NetType
+import net.corda.finance.contracts.NettableState
+import net.corda.finance.contracts.asset.Obligation.Lifecycle.NORMAL
 import net.corda.finance.utils.sumFungibleOrNull
 import net.corda.finance.utils.sumObligations
 import net.corda.finance.utils.sumObligationsOrNull

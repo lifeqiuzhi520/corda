@@ -1,6 +1,6 @@
 package net.corda.core.flows
 
-import net.corda.core.crypto.SecureHash
+import net.corda.core.crypto.types.SecureHash
 import net.corda.core.serialization.CordaSerializable
 
 /**

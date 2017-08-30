@@ -4,8 +4,8 @@ import co.paralleluniverse.fibers.Suspendable
 import net.corda.core.contracts.AbstractAttachment
 import net.corda.core.contracts.Attachment
 import net.corda.core.contracts.NamedByHash
-import net.corda.core.crypto.SecureHash
 import net.corda.core.crypto.sha256
+import net.corda.core.crypto.types.SecureHash
 import net.corda.core.flows.FlowException
 import net.corda.core.flows.FlowLogic
 import net.corda.core.identity.Party

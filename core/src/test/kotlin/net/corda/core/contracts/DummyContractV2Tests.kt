@@ -1,10 +1,10 @@
 package net.corda.core.contracts
 
-import net.corda.testing.contracts.DummyContract
-import net.corda.testing.contracts.DummyContractV2
-import net.corda.core.crypto.SecureHash
+import net.corda.core.crypto.types.SecureHash
 import net.corda.testing.ALICE
 import net.corda.testing.DUMMY_NOTARY
+import net.corda.testing.contracts.DummyContract
+import net.corda.testing.contracts.DummyContractV2
 import org.junit.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
